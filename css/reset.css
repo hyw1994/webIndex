@@ -21,4 +21,4 @@ a,a:hover{color:#21a557;}
 .parent{background:#ddd;color:#fff;}
 .clearfix:after{content:'';clear:both;display:block;height:0;overflow:hidden;visibility:hidden;}
 p{background: transparent;}
-.right p{background:#999;}
+/**{overflow: hidden;}*/

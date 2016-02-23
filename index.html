@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" /> 
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" /> 
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
 	<title>网易教育产品部</title>
@@ -9,8 +9,8 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css"/>
 	<script type="text/javascript" src="js/compatible.js"></script>
 </head>
-<body>
-<div id="g-container">
+<body id="body">
+	<!-- 顶部导航栏 -->
 	<div class="m-hdnav" id="mhdnav">
 		<div class="g-flexnav" id="gflexnav">
 		<div class="content-fix clearfix">
@@ -34,6 +34,7 @@
 		</div>
 	</div>
 	</div>
+	<!-- slide轮播头图 -->
 	<div class="g-tpbd">
 		<div class="m-slide" id="mslide"> 
 			<img src="image/banner1.jpg" class="f-img" id="img" usemap="#hrefmap" alt="banner">
@@ -41,39 +42,109 @@
 			<div class="f-slide" id="fslide"><i class="point" id="point0"></i><i class="point" id="point1"></i><i class="point" id="point2"></i></div>
 		</div>
 		<div class="m-prdt">
-			<div class="f-prdt" id="fprdt">
+			<div class="f-container">
+				<div class="f-prdt clearfix" id="fprdt"></div>
 			</div>
 		</div>
-		<div class="m-envt">工作环境</div>
+		<div class="envt-coner">
+			<div class="m-envt" id="menvt"></div>
+		</div>
 	</div>
-	<div class="mbg-fix">
+	<!-- 主界面 -->
 	<div class="g-mbd">
-		<div class="mbd-fix clearfix">
+		<div class="f-middle clearfix">
 			<div class="left-fix">
-				<div class="m-left">左侧</div>
+				<div class="m-left">
+				<!-- tab按钮 -->
+					<div class="f-tab">
+						<div class="lf-tab j-selected" id="lftab">
+							<p>产品设计</p>
+						</div>
+						<div class="rt-tab" id="rttab">
+							<p>编程语言</p>
+						</div>
+					</div>
+					<!-- 课程列表 -->
+					<ul class="cl-list clearfix" id="clist"></ul>
+					<div class="f-page clearfix" id="pageSelector">
+						<div class="lt-page" id="lastPage"></div>
+						<div class="rt-page" id="nextPage"></div>
+					</div>
+				</div>
 			</div>
-			<div class="m-right">右侧</div>
+			<!-- 右侧机构介绍 -->
+			<div class="m-right">
+				<div class="f-video">
+					<p class="f-top">机构介绍</p>
+					<p class="f-show">观看下面的视频来了解吧:</p>
+					<img src="image/video.jpg" class="f-cover" id="fcover">
+				</div>
+				<!-- 右侧排行 -->
+				<div class="f-list">
+					<p class="up">最热排行</p>
+					<div style="overflow: hidden;">
+						<ui class="li-10" id="ul"></ui>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+	<!-- 底栏 -->
+	<div class="m-bot">
+		<div class="f-container" id="bottom">
+			<div class="f-left">
+				<h3 class="f-logo">网易教育产品部</h3>
+				<p class="f-copyright">&copy2014 icourse163.org 浙ICP备08114786号-1</p>
+				<p class="f-copyright f-lower">icourses.cn 京ICP备12020869号-2 京公网安备110102000459-2</p>
+			</div>
+			<div class="f-links">
+				<p>友情链接</p>
+				<a href="http://open.163.com/">网易公开课</a>
+				<a href="http://study.163.com/">网易云课堂</a>
+				<a href="http://www.icourse163.org/">中国大学MOOC</a>
+			</div>
+			<div class="f-us">
+				<p>我们:</p>
+				<a href="">关于</a>
+				<a href="">联系</a>
+				<a href="">关注</a>
+			</div>
+			<div class="f-more">
+				<p>更多:</p>
+				<a href="">常见问题</a>
+				<a href="">意见反馈</a>
+			</div>
+		</div>
 	</div>
-	<div class="m-bot">底栏</div>
+	<!-- 登录界面弹窗 -->
 	<div class="m-login" id="mlogin" style="z-index: 999; display: none;">
-		<div class="f-login">
+		<div class="f-login animated">
 			<iframe name="frm" id="result" style="display: none;"></iframe>
 			<form action="http://study.163.com/webDev/login.htm" method="get" enctype="application/x-www-form-urlencoded" target="frm">
 				<h2 class="legend">登录网易云课堂</h2>
 				<p class="f-close" id="fclose"></p>
 				<fieldset>
 					<p class="container u-container"><input id="userName" name="userName" class="container input f-userName" placeholder="账号" value="studyOnline" /></p>
-					<p class="container p-container"><input id="passWord" type="password" class="container input f-passWord" name="password" placeholder="密码" value="study.163.com" /></p>
+					<p class="container p-container"><input id="passWord" type="password" class="container input f-passWord" name="password" placeholder="密码" value="study.163.com"/></p>
 					<p class="container b-container"><button id="submit" class="container input f-button">登录</button></p>
 				</fieldset>
 			</form>
 		</div>
 		<div class="login-Mask" id="loginMask"></div>
 	</div>
-</div>
+	<!-- 课程弹窗界面 -->
+	<div class="m-floatWin clearfix" style="display: none;" id="floatWin">
+		<img src="" class="floatImg" id="floatImg">
+		<div class="rightSide">
+			<h4 class="ft-title" id="fttitle">这里是标题</h4>
+			<p class="ft-num" id="ftnum">57人在学</p>
+			<p id="ftpro">发布者：几分钟网</p>
+			<p id="ftclass">分类：手绘设计</p>
+		</div>
+			<p class="botDes" id="botDes"></p>	
+	</div>
 <script type="text/javascript" src="js/md5.js"></script>
+<script type="text/javascript" src="js/animate.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>

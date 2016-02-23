@@ -3,7 +3,7 @@
 var isIE = checkIE.getElementsByTagName("i").length == 1;
 // 检测是否是IE浏览器
 var IE = (navigator.userAgent.indexOf("Trident") != -1);
-
+var IE9 = (navigator.userAgent.indexOf("9") == 30);
 // 兼容IE8添加event
 var addEvent = document.addEventListener ?
 	function(elem, type, listener, useCapture) {
@@ -120,7 +120,9 @@ if(isIE){
 }
 // 添加className方法兼容
 function addClass(ele,className){
-	(ele.classList)? ele.classList.add(className) : ele.className += " " + className;
+	if(ele.className.indexOf(className) == -1){
+		(ele.classList)? ele.classList.add(className) : ele.className += " " + className;
+	}
 }
 // 删除className方法兼容
 function delClass(ele,className){
@@ -136,13 +138,13 @@ function ajax(method,url,call,argument){
 		argument = serialize(argument);
 		url = url + "?" + argument;
 	}
-	xhr.open(method,url,true);
-	if(xhr.onload != undefined){
+	xhr.open(method, url, true);
+	if(!IE){
 		xhr.onload = callback;
 	}else{
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState == 4){
-				if((xhr.status >= 200 &&xhr.status < 300) || xhr.status == 304){
+				if((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304){
 					callback();
 			}else{
 				console.log('Request was unsuccessful:' + xhr.status);
@@ -150,7 +152,7 @@ function ajax(method,url,call,argument){
 			}
 		}
 	}
-	xhr.send();
+	xhr.send(null);
 	function callback(){
 		data =  JSON.parse(xhr.responseText);
 		call(data);
@@ -164,11 +166,11 @@ function serialize(data){
 		if(!data.hasOwnProperty(name)) continue;
 		if(typeof data[name] === 'function') continue;
 		var value = data[name].toString();
-		name = encodeURLComponent(name);
-		value = encodeURLComponent(values);
+		name = encodeURIComponent(name);
+		value = encodeURIComponent(value);
 		pairs.push(name + '=' + value);
 	}
-		return pairs.join('&');
+	return pairs.join('&');
 }
 // html元素的显示与隐藏函数封装
 function show(ele){
@@ -183,3 +185,50 @@ function html2node(str){
 	container.innerHTML = str;
 	return container.children[0];
 }
+// extend，对象赋值函数
+function extend(o1,o2){
+	for(var i in o2) if(typeof o1[i] === "undefined"){
+		o1[i] = o2[i];
+	}
+	return o1;
+}
+// 取得一个元素的页面绝对位置
+function getPosition(obj){
+	var position = {
+		left: 0,
+		top: 0
+	}
+		// while(obj){
+		position.left += obj.offsetLeft;
+		position.top += obj.offsetTop;
+	return position;
+}
+// 取得元素目前样式
+function cssStyle(ele){
+	return ele.currentStyle?  ele.currentStyle :  getComputedStyle(ele);
+}
+// 常量保存函数
+var constant = (function(){
+				var rightSide = 235;
+				var leftSide = 490;
+				var offset = 11;
+				return {
+					right: function(){
+						return rightSide;
+					},
+					left: function(){
+						return leftSide;
+					},
+					offset: function(){
+						return offset;
+					}
+				}
+				})();
+// 获取课程列表函数
+// function getClass(currentPage){
+// 	GLOBAL.clearPage();
+// 	GLOBAL.setPage(currentPage);
+// 	ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",GLOBAL.showList,argument);
+// }
+
+
