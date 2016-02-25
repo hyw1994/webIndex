@@ -1,4 +1,4 @@
-/* flexnav布局 */
+ /* flexnav布局 */
 .m-hdnav .g-flexnav{
 	height: 36px; 
 	background: url(../image/wrap_background.png) repeat-x scroll;
@@ -152,17 +152,12 @@
 .g-tpbd .m-prdt{
 	height: 298px;
 }
-.g-tpbd .m-prdt .f-container{
-	position: relative;
-	width: 1206px;
-	left: 50%;
-	margin-left: -603px;
-	overflow: hidden;
-}
 
 /* 产品信息布局 */
 .g-tpbd .m-prdt .f-prdt{
 	height: 100%;
+	width: 1206px;
+	margin: 0 auto;
 }
 .g-tpbd .m-prdt .f-list{
 	width: 424px;
@@ -192,21 +187,21 @@
 	line-height: 22px;
 	font-size: 22px;
 }
-.g-tpbd .m-prdt .f-list .side .para{
+.g-tpbd .m-prdt .para{
 	width: 238px;
 	height: 98px;
 	margin-top: 20px;
 	font-size: 14px;
 	line-height: 24px;
 }
-.g-tpbd .m-prdt .f-list .side .more{
+.g-tpbd .m-prdt .more{
 	float: left;
 	height: 14px;
 	margin-top: 35px;
 	font-size: 14px;
 	line-height: 14px;
 }
-.g-tpbd .m-prdt .f-list .side .more:hover{
+.g-tpbd .m-prdt .more:hover{
 	text-decoration: underline;
 }
 
@@ -229,8 +224,8 @@
 /* m-mbd布局 */
 .g-mbd{
 	text-align: left;
-	overflow: hidden;
-	background-color: #F6F6F6;
+/*	overflow: hidden;
+*/	background-color: #F6F6F6;
 }
 .g-mbd .f-middle{
 	width: 1206px;
@@ -815,6 +810,8 @@ Copyright (c) 2015 Daniel Eden
   animation-name: zoomOut;
 }
 /* 以下为@media响应式布局方案 */
+
+/* 当屏幕小于960px时，导航栏，课程界面，产品展示宽度改变 */
 @media screen and (max-width: 1205px){
 	.g-mbd .m-left .cl-list{
 		width: 735px;
@@ -822,8 +819,9 @@ Copyright (c) 2015 Daniel Eden
 	.m-hdnav .g-fixnav,
 	.m-bot .f-container,
 	.m-hdnav .content-fix,
-	.g-mbd .f-middle{
-		width: 961px;
+	.g-mbd .f-middle,
+	.g-tpbd .m-prdt .f-prdt{
+		width: 960px;
 	}
 
 	.m-bot .f-container .f-logo,
@@ -832,3 +830,33 @@ Copyright (c) 2015 Daniel Eden
 		left: 0px;
 	}
 }
+/* 产品展示界面，行宽，格宽的改变 */
+/* 字体框行宽 */
+@media screen and (max-width: 1205px){
+	.g-tpbd .m-prdt .para{
+		width: 170px;
+		text-align: justify;
+	}
+	.g-tpbd .m-prdt .f-list{
+		width: 335px;
+	}
+	.g-tpbd .m-prdt .f-list:last-child{
+		width: auto;
+	}
+	.g-tpbd .m-prdt .more{
+		margin-top: 65px;
+	}
+	.g-tpbd .m-prdt{
+		height: 318px;
+	}
+}
+/* 当画面小于等于960px时，控制背景颜色，背景图片覆盖全部的位置 */
+@media screen and (max-width: 960px){
+	.g-tpbd,
+	.m-hdnav .g-flexnav,
+	.g-mbd,
+	.m-bot{
+		width: 960px;
+	}
+}
+

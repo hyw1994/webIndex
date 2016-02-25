@@ -265,16 +265,16 @@ var GLOBAL = {};
 							</div>\
 							</div>';
 	}
-	var product1 = new Product("网易公开课","推出国内外名校公开课，涉及广泛的学科，名校老师认真讲解深度剖析，网易视频公开课频道搭建起强有力的网络视频教学平台。"
+	var product1 = new Product("网易公开课","推出国内外名校公开课,涉及广泛的学科,名校老师认真讲解深度剖析,网易视频公开课频道搭建起强有力的网络视频教学平台。"
 								,"http://open.163.com/");
-	var product2 = new Product("云课堂","网易旗下大型在线学习平台，该平台面向学习者提供海量免费、优质课程，创新的个性学习体验，自由开放的交流互动环境。",
+	var product2 = new Product("云课堂","网易旗下大型在线学习平台,该平台面向学习者提供海量免费、优质课程,创新的个性学习体验,自由开放的交流互动环境。",
 								"http://study.163.com/");
-	var product3 = new Product("中国大学MOOC","是爱课程网携手云课堂打造的在线学习平台，每一个有提升愿望的人，都可以在这里学习中国最好的大学课程，学完还能获得认证证书。",
+	var product3 = new Product("中国大学MOOC","是爱课程网携手云课堂打造的在线学习平台,每一个有提升愿望的人,都可以在这里学习中国最好的大学课程,学完还能获得认证证书。",
 								"http://www.icourse163.org/");
 	var node1 = html2node(product1.template);
 	var node2 = html2node(product2.template);
 	var node3 = html2node(product3.template);
-	node3.style.width = "358px";
+	node3.style.width = "auto";
 	node2.children[0].children[0].style.background = "url(image/sprite.png) -117px -111px no-repeat"
 	node3.children[0].children[0].style.background = "url(image/sprite.png) -230px -111px no-repeat"
 	fprdt.appendChild(node1);
@@ -505,7 +505,7 @@ var GLOBAL = {};
 			},false);
 			addEvent(this.container,"mouseleave",function(event){
 				// 移出课程窗口，隐藏课程详情弹窗
-				if(cssStyle(GLOBAL.winWidth).width == "961px") return
+				if(cssStyle(GLOBAL.winWidth).width == "960px") return
 				GLOBAL.floatWin.style.display = "none";
 			},false);
 		},
@@ -681,7 +681,7 @@ var GLOBAL = {};
 	GLOBAL.showWin = showWin;
 	addEvent(GLOBAL.floatWin,"mouseleave",function(event){
 		// 移出课程窗口，隐藏课程详情弹窗
-		if(cssStyle(GLOBAL.winWidth).width == "961px") 	this.style.display = "none";
+		if(cssStyle(GLOBAL.winWidth).width == "960px") 	this.style.display = "none";
 		},false);
 	// 取得屏幕宽度的方法
 	GLOBAL.winWidth = $("bottom");
@@ -693,7 +693,7 @@ var GLOBAL = {};
 	// 将弹窗课程窗口设置到对应的位置上去
 	GLOBAL.setPosition = function(position,index){
 		GLOBAL.floatWin.style.top = position.top  + "px";
-		if(cssStyle(GLOBAL.winWidth).width != "961px"){
+		if(cssStyle(GLOBAL.winWidth).width != "960px"){
 			// 如果在宽屏下，最右的一列向左侧浮动
 			if((index+1)%4 == 0){
 				GLOBAL.floatWin.style.left = position.left - constant.left() + "px";
