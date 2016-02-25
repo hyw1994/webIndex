@@ -125,6 +125,9 @@ var GLOBAL = {};
 (function(){
 	var state = 0;
 	var form = document.forms[0];
+	if(cookie.getCookie().loginSuc == "true"){
+		attention(1);
+	}
 	addEvent(form,"submit",test,true);
 	// 对输入的用户名和密码进行验证
 	function test(event){
@@ -196,40 +199,37 @@ var GLOBAL = {};
 		try{
 			var result = JSON.parse(frame.contentWindow.document.body.textContent);
 			if(result == 1){
-				animateClass(mlogin.firstElementChild, "zoomOut",function(){
-					hide($("mlogin"));
-				});
-				document.forms[0].reset();
-				disableSubmit(false);
-				cookie.setCookie("loginSuc",true);
-				ajax("get","http://study.163.com/webDev/attention.htm",attention);
+				success();
 			}
 		}catch(ex){
 			if(state == 1){
-				animateClass(mlogin.firstElementChild, "zoomOut",function(){
-					hide($("mlogin"));
-				});
-				if(IE9) hide($("mlogin"));
-				document.forms[0].reset();
-				disableSubmit(false);
-				cookie.setCookie("loginSuc",true);
-				// 以下代码是因为IE8和9在xhr.open跨域时的错误，为了测试功能而存在的代码
-				try{				
-					ajax("get","http://study.163.com/webDev/attention.htm",attention);
-				}catch(ex){
-					attention(1);
-				}
+				success();
 			}
 		}
 	}
-	if(cookie.getCookie().loginSuc == "true"){
-		attention(1);
+	// 当调用服务器登录接口成功时，执行此操作
+	function success(){
+		animateClass(mlogin.firstElementChild, "zoomOut",function(){
+			hide($("mlogin"));
+		});
+		if(IE9) hide($("mlogin"));
+		focus();
 	}
-	GLOBAL.attention = attention;
+	// 登录成功之后，自动调用关注接口
+	function focus(){
+		document.forms[0].reset();
+		disableSubmit(false);
+		cookie.setCookie("loginSuc",true);
+		// 以下代码是因为IE8和9在xhr.open跨域时的错误，为了测试功能而存在的代码
+		try{				
+			ajax("get","http://study.163.com/webDev/attention.htm",attention);
+		}catch(ex){
+			attention(1);
+		}
+	}
 	// 当关注接口调用完毕，执行此函数，替换显示界面，以及cookie的注册
 	function attention(data){
 		if(data == 1 || isIE){
-			console.log(data);
 			var cancel = $("fcancel");
 			cookie.setCookie("followSuc",true);
 			hide($("ffocus"));
@@ -238,6 +238,7 @@ var GLOBAL = {};
 			addEvent(cancel,"click",logOf,false);
 		}
 	}
+	// 点击取消按钮之后执行的注销操作
 	function logOf(){
 		cookie.setCookie("loginSuc",false);
 		cookie.setCookie("followSuc",false);
@@ -484,6 +485,7 @@ var GLOBAL = {};
 
 		this._initEvent();
 	}
+	GLOBAL.floatWin = $("floatWin");
 	extend(ClassList.prototype,{
 		_layout: html2node(template),
 		olNode: $("clist"),
@@ -504,7 +506,7 @@ var GLOBAL = {};
 			addEvent(this.container,"mouseleave",function(event){
 				// 移出课程窗口，隐藏课程详情弹窗
 				if(cssStyle(GLOBAL.winWidth).width == "961px") return
-				$("floatWin").style.display = "none";
+				GLOBAL.floatWin.style.display = "none";
 			},false);
 		},
 		append: function(){
@@ -677,13 +679,46 @@ var GLOBAL = {};
 (function(){
 	// floatWin弹窗显示课程信息
 	GLOBAL.showWin = showWin;
-	addEvent($("floatWin"),"mouseleave",function(event){
+	addEvent(GLOBAL.floatWin,"mouseleave",function(event){
 		// 移出课程窗口，隐藏课程详情弹窗
 		if(cssStyle(GLOBAL.winWidth).width == "961px") 	this.style.display = "none";
 		},false);
+	// 取得屏幕宽度的方法
 	GLOBAL.winWidth = $("bottom");
 	function showWin(position, index){
-		var floatWin = $("floatWin");
+		GLOBAL.setPosition(position,index);
+		GLOBAL.setClass(GLOBAL.getData(index));
+
+	}	
+	// 将弹窗课程窗口设置到对应的位置上去
+	GLOBAL.setPosition = function(position,index){
+		GLOBAL.floatWin.style.top = position.top  + "px";
+		if(cssStyle(GLOBAL.winWidth).width != "961px"){
+			// 如果在宽屏下，最右的一列向左侧浮动
+			if((index+1)%4 == 0){
+				GLOBAL.floatWin.style.left = position.left - constant.left() + "px";
+			}else{
+				// 其他的向右侧浮动
+				GLOBAL.floatWin.style.left = position.left + constant.right() + "px";
+			}
+		}else{
+			// 如果是窄屏浏览，根据窄屏的要求浮动
+			GLOBAL.floatWin.style.left = position.left - constant.offset() + "px";
+			GLOBAL.floatWin.style.top = position.top  - constant.offset() + "px";
+		}
+	}
+	// 将获取到的课程信息，复制到弹窗中
+	GLOBAL.setClass = function(data){
+		data[0].style.display = "";
+		data[1].src = data[7].url;
+		data[2].innerHTML = data[7].name;
+		data[3].innerHTML = data[7].description;
+		data[4].innerHTML = data[7].number + "人在学";
+		data[5].innerHTML = data[7].provider;
+		data[6].innerHTML = "分类：" + data[7].clclass;
+	}
+	// 获取目前选中的课程数据
+	GLOBAL.getData = function(index){
 		var img = $("floatImg");
 		var title = $("fttitle");
 		var des = $("botDes");
@@ -691,23 +726,7 @@ var GLOBAL = {};
 		var pro = $("ftpro");
 		var ftclass = $("ftclass");
 		var item = GLOBAL.list[index].data;
-		floatWin.style.top = position.top  + "px";
-		if(cssStyle(GLOBAL.winWidth).width != "961px"){
-			if((index+1)%4 == 0){
-				floatWin.style.left = position.left - constant.left() + "px";
-			}else{
-				floatWin.style.left = position.left + constant.right() + "px";
-			}
-		}else{
-			floatWin.style.left = position.left - constant.offset() + "px";
-			floatWin.style.top = position.top  - constant.offset() + "px";
-		}
-		floatWin.style.display = "";
-		img.src = item.url;
-		title.innerHTML = item.name;
-		des.innerHTML = item.description;
-		pro.innerHTML = item.provider;
-		num.innerHTML = item.number + "人在学";
-		ftclass.innerHTML = "分类：" + item.clclass;
-	}	
+		// 返回选中的元素
+		return [GLOBAL.floatWin,img,title,des,num,pro,ftclass,item];
+	}
 })();
