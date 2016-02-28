@@ -1,117 +1,36 @@
- /* flexnav布局 */
-.m-hdnav .g-flexnav{
-	height: 36px; 
-	background: url(../image/wrap_background.png) repeat-x scroll;
-}
-.m-hdnav .content-fix{
-	width: 1206px;
-	height: 100%;
-	box-sizing: border-box;
-	padding: 9px 0;
-	margin: 0 auto;
-	line-height: 18px;
-}
-.m-hdnav .g-flexnav .f-ltext{
-	height: 18px;
-	float: left;
-}
-.m-hdnav .g-flexnav .f-rtext{
-	float: right;
-	text-indent: 15px;
-	cursor: pointer;
-	background: url(../image/sprite.png) -356px -22px no-repeat;
-}
+/* 样式规范说明： 
+ *文件引入：外联引入(display:none除外)，不使用@import
+ *编码：UTF-8 
+ *flexnav布局 
+ *注释规范：块状注释，缩进1格，位于注释内容上方；单行注释，注释文字两侧加空格，位于注释内容上方；行内注释，位于分号后面，注释文字两侧加空格
+ *命名规范：语义化命名，g-前缀为布局样式，m-前缀为模块样式，f-前缀为模块中具有多态的元素
+ */
 
-/* fixednav布局 */
-.m-hdnav .g-fixnav{
-	width: 1206px;
-	height: 90px;
-	margin: 0 auto;
-	padding: 32px 0 36px 0;
-	line-height: 21px;
-	line-height: 18px\9;
-	box-sizing: border-box;
-	background: #FFFFFF;
-}
-.m-hdnav .g-fixnav h1{
-	float: left;
-	height: 22px;
-	padding-left: 84px;
-	font-size: 22px;
-	background: url(../image/sprite.png) -339px -149px no-repeat;
-}
-.m-hdnav .g-fixnav .m-focus{
-	height: 22px;
-	float: left;
-}
-.m-hdnav .g-fixnav .m-focus .f-focus{
-	width: 32px;
-	height: 22px;
-	cursor: pointer;
-	padding-left: 22px;
-	margin-left: 31px;
-	margin-right: 14px;
-	color: #FEFEFE;
-	background: url(../image/sprite.png) -7px -25px no-repeat;
-}
-.m-hdnav .g-fixnav .m-focus .f-focus:hover{
-	background: url(../image/sprite.png) -7px -1px no-repeat;
-}
-.m-hdnav .g-fixnav .m-focus .f-focused{
-	float: left;
-	width: 106px;
-	height: 22px;
-	margin-left: 30px;
-	margin-right: 14px;
-	line-height: 22px;
-	background: url(../image/sprite2.png) no-repeat;
-}
-.m-hdnav .g-fixnav .m-focus .f-focused:hover{
-	background: url(../image/sprite2.png) 0 -25px no-repeat;
-}
-.m-hdnav .g-fixnav .m-focus .f-focused .f-ltfocus{
-	float: left;
-	margin-left: 23px;
-}
-.m-hdnav .g-fixnav .m-focus .f-focused .f-rtfocus{
-	float: right;
-	margin-right: 8px;
-}
-.m-hdnav .g-fixnav .m-focus .f-focused .f-rtfocus:hover{
-	color: #209845;
-	cursor: pointer;
-	text-decoration: underline;
-}
-.m-hdnav .g-fixnav .m-focus .f-num{
-	float: left;
-	color: #535353;
-}
-.m-hdnav .g-fixnav .m-focus p{
-	float: left;
-}
-.m-hdnav .g-fixnav .m-nav{
-	float: right;
-	height: 22px;
-	font-size: 16px;
-}
-.m-hdnav .g-fixnav .m-nav a{
-	float: right;
-	margin-left: 55px;
-	color: #666666;
-}
-.m-hdnav .g-fixnav .m-nav a:hover{
-	color: #309324;
-}
-.m-hdnav .g-fixnav .m-nav .search{
-	width: 18px;
-	height: 18px;
-	margin-right: 14px;
-	margin-left: 30px;
-	background: url(../image/sprite.png) -271px -27px no-repeat;
-}
-.m-hdnav .g-fixnav .m-nav .search:hover{
-	background: url(../image/sprite.png) -271px -3px no-repeat;
-}
+/* 顶部提示栏 */
+.g-header .m-flexnav{height: 36px; background: url(../image/wrap_background.png) repeat-x scroll;}
+.g-header .content-fix{width: 1206px; height: 100%; padding: 9px 0; margin: 0 auto; box-sizing: border-box; line-height: 18px;}
+.g-header .m-flexnav .ltext{float: left; height: 18px;}
+.g-header .m-flexnav .rtext{float: right; text-indent: 15px; cursor: pointer; background: url(../image/sprite.png) -356px -22px no-repeat;}
+
+/* 固定导航布局 */
+.g-nav{width: 1206px; height: 90px; margin: 0 auto; padding: 32px 0 36px 0; box-sizing: border-box;line-height: 21px;/* 此处21px，因为在IE11中，22px字体会大幅度下降 */ line-height: 18px\9; background-color: #FFFFFF;}
+.g-nav h1{float: left; height: 22px; padding-left: 84px; font-size: 22px; background: url(../image/sprite.png) -339px -149px no-repeat; color: #333333;}
+.g-nav .m-focus{float: left; height: 22px;}
+.g-nav .f-focus{width: 32px; height: 22px; cursor: pointer; padding-left: 22px; margin-left: 31px; margin-right: 14px; color: #FEFEFE; background: url(../image/sprite.png) -7px -25px no-repeat;}
+.g-nav .f-focused{float: left; width: 106px; height: 22px; margin-left: 30px; margin-right: 14px; line-height: 22px; background: url(../image/sprite2.png) no-repeat;}
+.g-nav .f-ltfocus{margin-left: 23px;}
+.g-nav .f-focused .f-cancel{float: right; margin-right: 8px;}
+.g-nav .m-focus .f-num{float: left; color: #535353;}
+.g-nav .m-focus p{float: left;}
+.g-nav .nav{float: right; height: 22px; font-size: 16px;}
+.g-nav .nav a{float: right; margin-left: 55px; color: #666666;}
+.g-nav .nav .search{width: 18px; height: 18px; margin-right: 14px; margin-left: 30px; background: url(../image/sprite.png) -271px -27px no-repeat;}
+/* 导航栏hover样式 */
+.g-nav .f-focus:hover{background: url(../image/sprite.png) -7px -1px no-repeat;}
+.g-nav .f-focused:hover{background: url(../image/sprite2.png) 0 -25px no-repeat;}
+.g-nav .f-cancel:hover{color: #209845; cursor: pointer; text-decoration: underline;}
+.g-nav .nav a:hover{color: #309324;}
+.g-nav .nav .search:hover{background: url(../image/sprite.png) -271px -3px no-repeat;}
 
 /* m-tpbd布局 */
 /* m-slide布局 */
@@ -193,6 +112,7 @@
 	margin-top: 20px;
 	font-size: 14px;
 	line-height: 24px;
+	text-align: justify;
 }
 .g-tpbd .m-prdt .more{
 	float: left;
@@ -289,8 +209,6 @@
 	margin-bottom: 20px;
 	width: 225px;
 	height: 227px;
-	font-size: 12px;
-	line-height: 16.8px;
 	background-color: #ffffff;
 }
 .g-mbd .m-left .cl-list .cl-item .container{
@@ -521,67 +439,19 @@
 	background: url(../image/sprite2.png) -228px -21px no-repeat;
 }
 
-/* m-bot布局 */
-.m-bot{
-	height: 262px;
-	background: url(../image/sprite2.png) 0 -55px repeat-x;
-}
-.m-bot .f-container{
-	width: 1206px;
-	height: 100%;
-	margin: 0 auto;
-	position: relative;
-	color: #919394;
-	font-size: 14.58px;
-	line-height: 29.17px;
-}
-.m-bot .f-container a{
-	display: block;
-	color: #919394;
-}
-.m-bot .f-container a:hover{
-	text-decoration: underline;
-}
-.m-bot .f-container p{
-	font-size: 12.5px;
-}
-.m-bot .f-container .f-logo{
-	position: absolute;
-	height: 22px;
-	padding-left: 84px;
-	left: 50px;
-	top: 95px;
-	line-height: 22px;
-	color: #309324;
-	font-size: 22px;
-	background: url(../image/sprite.png) -339px -149px no-repeat;
-}
-.m-bot .f-container .f-copyright{
-	position: absolute;
-	top: 143px;
-	left: 50px;
-	font-size: 12.5px;
-	line-height: 25px;
-}
-.m-bot .f-container .f-lower{
-	top: 168px;
-}
-.m-bot .f-container .f-links{
-	position: absolute;
-	left: 557px;
-	top: 82px;
-}
-.m-bot .f-container .f-us{
-	position: absolute;
-	top: 82px;
-	left: 766px;
-}
-.m-bot .f-container .f-more{
-	position: absolute;
-	top: 82px;
-	left: 900px;
-}
+/* footer布局 */
+.g-footer{height: 262px; background: url(../image/sprite2.png) 0 -55px repeat-x;}
+.g-footer .m-bottom{position: relative; width: 1206px; height: 100%; margin: 0 auto; color: #919394; font-size: 14.58px; line-height: 29.17px;}
+.g-footer .m-bottom a{display: block; color: #919394;}
+.g-footer .m-bottom p{font-size: 12.5px;}
+.g-footer .m-bottom .f-logo{position: absolute; height: 22px; padding-left: 84px; left: 50px; top: 95px; line-height: 22px; color: #309324; font-size: 22px; background: url(../image/sprite.png) -339px -149px no-repeat;}
+.g-footer .m-bottom .f-copyright{position: absolute; top: 143px; left: 50px; font-size: 12.5px; line-height: 25px;}
+.g-footer .m-bottom .f-lower{top: 168px;}
+.g-footer .m-bottom .f-links{position: absolute; left: 557px; top: 82px;}
+.g-footer .m-bottom .f-us{position: absolute; top: 82px; left: 766px;}
+.g-footer .m-bottom .f-more{position: absolute; top: 82px; left: 900px;}
 
+.g-footer .m-bottom a:hover{text-decoration: underline;}
  /* loginMask布局 */ 
 .m-login .login-Mask{
 	position: fixed;
@@ -712,6 +582,7 @@
 	background: none !important;
 	background-color: #ddd !important;
 }
+/* 特殊效果(如阴影，选中状态) */
 .j-shadow{
 	box-shadow: 1px 1px 2px #ecebeb, -1px 1px 2px #ecebeb;
 }
@@ -813,50 +684,30 @@ Copyright (c) 2015 Daniel Eden
 
 /* 当屏幕小于960px时，导航栏，课程界面，产品展示宽度改变 */
 @media screen and (max-width: 1205px){
-	.g-mbd .m-left .cl-list{
-		width: 735px;
-	}
-	.m-hdnav .g-fixnav,
-	.m-bot .f-container,
-	.m-hdnav .content-fix,
+	.g-mbd .m-left .cl-list{width: 735px;}
+	.g-nav,
+	.g-footer .m-bottom,
+	.g-header .content-fix,
 	.g-mbd .f-middle,
-	.g-tpbd .m-prdt .f-prdt{
-		width: 960px;
-	}
+	.g-tpbd .m-prdt .f-prdt{width: 960px;}
 
-	.m-bot .f-container .f-logo,
-	.m-bot .f-container .f-copyright,
-	.m-bot .f-container .f-lower{
-		left: 0px;
-	}
+	.g-footer .m-bottom .f-logo,
+	.g-footer .m-bottom .f-copyright,
+	.g-footer .m-bottom .f-lower{left: 0px;}
 }
 /* 产品展示界面，行宽，格宽的改变 */
 /* 字体框行宽 */
 @media screen and (max-width: 1205px){
-	.g-tpbd .m-prdt .para{
-		width: 170px;
-		text-align: justify;
-	}
-	.g-tpbd .m-prdt .f-list{
-		width: 335px;
-	}
-	.g-tpbd .m-prdt .f-list:last-child{
-		width: auto;
-	}
-	.g-tpbd .m-prdt .more{
-		margin-top: 65px;
-	}
-	.g-tpbd .m-prdt{
-		height: 318px;
-	}
+	.g-tpbd .m-prdt .para{width: 170px;}
+	.g-tpbd .m-prdt .f-list{width: 335px;}
+	.g-tpbd .m-prdt .f-list:last-child{width: auto;}
+	.g-tpbd .m-prdt .more{margin-top: 65px;}
+	.g-tpbd .m-prdt{height: 318px;}
 }
 /* 当画面小于等于960px时，控制背景颜色，背景图片覆盖全部的位置 */
-@media screen and (max-width: 960px){
-	.g-tpbd,
-	.m-hdnav .g-flexnav,
-	.g-mbd,
-	.m-bot{
-		width: 960px;
+@media screen and (max-width: 1000px){
+	.body{
+		width: 1000px;
 	}
 }
 

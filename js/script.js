@@ -3,8 +3,8 @@ var cookie = new Cookie();
 var GLOBAL = {};
 // 顶部状态栏操作
 (function(){
-	var rtext = $("frtext");
-	var flexnav = $("gflexnav");
+	var rtext = $("rtext");
+	var flexnav = $("mflexnav");
 	// 给nav_hidden按钮添加click事件
 	addEvent(rtext,"click",close,false);
 	// 载入界面时，通过判断cookie中nav_hidden的值，来决定是否隐藏flex_nav

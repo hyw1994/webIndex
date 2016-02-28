@@ -10,36 +10,37 @@
 	<script type="text/javascript" src="js/compatible.js"></script>
 </head>
 <body id="body" class="body">
-	<!-- 顶部导航栏 -->
-	<div class="m-hdnav" id="mhdnav">
-		<div class="g-flexnav" id="gflexnav">
+	<!-- 头部提示栏 -->
+	<header class="g-header">
+		<div class="m-flexnav" id="mflexnav">
 		<div class="content-fix clearfix">
-			<p class="f-ltext">网易云课堂微专业，帮助你掌握专业技能，令你求职或加薪多一份独特优势！<a href="#" target="_blank">立即查看&gt</a></p><p class="f-rtext" id="frtext">不再查看</p>
+			<p class="ltext">网易云课堂微专业，帮助你掌握专业技能，令你求职或加薪多一份独特优势！<a href="#" target="_blank">立即查看&gt</a></p><p class="rtext" id="rtext">不再查看</p>
 		</div>
 		</div>
-		<div class="g-fixnav">
-			<div class="m-logo clearfix">
-				<h1>网易教育产品部</h1>
-			<div class="m-focus clearfix">
-				<p class="f-focus" id="ffocus">关注</p>
-				<div class="f-focused" id="ffcoused" style="display: none;"><p class="f-ltfocus">已关注</p><p class="f-rtfocus" id="fcancel">取消</p></div>
-				<p class="f-num" id="fnum">粉丝：45</p>
-			</div>
-			<div class="m-nav">
-				<a href="" class="search"></a>
-				<a href="http://www.icourse163.org/" target="_blank">中国大学MOOC</a>
-				<a href="http://study.163.com/" target="_blank">云课堂</a>
-				<a href="http://open.163.com/" target="_blank">网易公开课</a>
-			</div>
+	</header>
+	<!-- 导航栏 -->
+	<nav class="g-nav">
+		<div class="logo clearfix">
+			<h1>网易教育产品部</h1>
+		<div class="m-focus clearfix">
+			<p class="f-focus" id="ffocus">关注</p>
+			<div class="f-focused" id="ffcoused" style="display: none;"><p class="f-ltfocus">已关注</p><p class="f-cancel" id="fcancel">取消</p></div>
+			<p class="f-num" id="fnum">粉丝：45</p>
 		</div>
-	</div>
-	</div>
+		<div class="nav">
+			<a href="" class="search"></a>
+			<a href="http://www.icourse163.org/" target="_blank">中国大学MOOC</a>
+			<a href="http://study.163.com/" target="_blank">云课堂</a>
+			<a href="http://open.163.com/" target="_blank">网易公开课</a>
+		</div>
+		</div>
+	</nav>
 	<!-- slide轮播头图 -->
 	<div class="g-tpbd">
 		<div class="m-slide" id="mslide"> 
 			<img src="image/banner1.jpg" class="f-img" id="img" usemap="#hrefmap" alt="banner">
 			<map name="hrefmap"><area href="http://open.163.com/" shape="rect" coords="0,0,1600,1800" target="_blank" id="imgHref"/></map>
-			<div class="f-slide" id="fslide"><i class="point" id="point0"></i><i class="point" id="point1"></i><i class="point" id="point2"></i></div>
+			<div class="f-slide clearfix" id="fslide"><i class="point" id="point0"></i><i class="point" id="point1"></i><i class="point" id="point2"></i></div>
 		</div>
 		<div class="m-prdt">
 			<div class="f-prdt clearfix" id="fprdt"></div>
@@ -52,7 +53,7 @@
 	<div class="g-mbd">
 		<div class="f-middle clearfix">
 			<div class="left-fix">
-				<div class="m-left">
+				<article class="m-left">
 				<!-- tab按钮 -->
 					<div class="f-tab">
 						<div class="lf-tab j-selected" id="lftab">
@@ -68,10 +69,10 @@
 						<div class="lt-page" id="lastPage"></div>
 						<div class="rt-page" id="nextPage"></div>
 					</div>
-				</div>
+				</article>
 			</div>
 			<!-- 右侧机构介绍 -->
-			<div class="m-right">
+			<aside class="m-right">
 				<div class="f-video">
 					<p class="f-top">机构介绍</p>
 					<p class="f-show">观看下面的视频来了解吧:</p>
@@ -84,42 +85,42 @@
 						<ui class="li-10" id="ul"></ui>
 					</div>
 				</div>
-			</div>
+			</aside>
 		</div>
 	</div>
 	<!-- 底栏 -->
-	<div class="m-bot">
-		<div class="f-container" id="bottom">
-			<div class="f-left">
+	<footer class="g-footer">
+		<div class="m-bottom" id="bottom">
+			<section class="f-left">
 				<h3 class="f-logo">网易教育产品部</h3>
 				<p class="f-copyright">&copy2014 icourse163.org 浙ICP备08114786号-1</p>
 				<p class="f-copyright f-lower">icourses.cn 京ICP备12020869号-2 京公网安备110102000459-2</p>
-			</div>
-			<div class="f-links">
+			</section>
+			<section class="f-links">
 				<p>友情链接</p>
 				<a href="http://open.163.com/">网易公开课</a>
 				<a href="http://study.163.com/">网易云课堂</a>
 				<a href="http://www.icourse163.org/">中国大学MOOC</a>
-			</div>
-			<div class="f-us">
+			</section>
+			<section class="f-us">
 				<p>我们:</p>
 				<a href="">关于</a>
 				<a href="">联系</a>
 				<a href="">关注</a>
-			</div>
-			<div class="f-more">
+			</section>
+			<section class="f-more">
 				<p>更多:</p>
 				<a href="">常见问题</a>
 				<a href="">意见反馈</a>
-			</div>
+			</section>
 		</div>
-	</div>
+	</footer>
 	<!-- 登录界面弹窗 -->
 	<div class="m-login" id="mlogin" style="z-index: 999; display: none;">
 		<div class="f-login animated">
 			<iframe name="frm" id="result" style="display: none;"></iframe>
 			<form action="http://study.163.com/webDev/login.htm" method="get" enctype="application/x-www-form-urlencoded" target="frm">
-				<h2 class="legend">登录网易云课堂</h2>
+				<legend class="legend">登录网易云课堂</legend>
 				<p class="f-close" id="fclose"></p>
 				<fieldset>
 					<p class="container u-container"><input id="userName" name="userName" class="container input f-userName" placeholder="账号" value="studyOnline" /></p>
@@ -134,10 +135,10 @@
 	<div class="m-floatWin clearfix" style="display: none;" id="floatWin">
 		<img src="" class="floatImg" id="floatImg">
 		<div class="rightSide">
-			<h4 class="ft-title" id="fttitle">这里是标题</h4>
+			<h4 class="ft-title" id="fttitle">标题</h4>
 			<p class="ft-num" id="ftnum">57人在学</p>
-			<p id="ftpro">发布者：几分钟网</p>
-			<p id="ftclass">分类：手绘设计</p>
+			<p id="ftpro">发布者：</p>
+			<p id="ftclass">分类：</p>
 		</div>
 			<p class="botDes" id="botDes"></p>	
 	</div>
