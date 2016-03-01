@@ -1,3 +1,7 @@
+/* 
+*js注释规范：函数，方法外的注释，使用单行注释，存放在内容上端，函数，方法内的注释，使用行内注释法。
+*/
+
 // 全局变量定义
 var cookie = new Cookie();
 var GLOBAL = {};
@@ -13,7 +17,7 @@ var GLOBAL = {};
 	}else{
 		show(flexnav);
 	}
-	// 关闭flex_nav，通过添加cookie
+	// 关闭flex_nav，添加cookie
 	function close(){
 		cookie.setCookie("nav_hidden","true");
 		hide(flexnav);
@@ -21,13 +25,19 @@ var GLOBAL = {};
 })();
 
 (function(){
+	// 获取图片，图片容器以及点选择器
 	var img = $("img");
 	var slide = $("fslide");
 	var mslide = $("mslide");
+	// 获取slide下三个点选择器
 	var point = getElementsByClassName(slide,"point");
+	// 图片和链接使用img + usemap来实现，imgHref即area元素，用来根据图片更改链接地址
 	var imgHref = document.getElementById("imgHref");
+	// 纪录更换图片的动画ID
 	var intervalID;
+	// 初始化图片index
 	var index = 1;
+	// 存储三张图片的href地址
 	var bannerHerf = ["http://open.163.com/","http://study.163.com/","http://www.icourse163.org/"];
 	// 调用轮播头图启用轮播
 	point[0].style.backgroundColor = "black";
@@ -103,8 +113,7 @@ var GLOBAL = {};
 	var mlogin = $("mlogin");
 	var fclose = $("fclose");
 	var ffocus = $("ffocus");
-	// 点击“关注”弹出登录界面
-	addEvent(ffocus,"click",login,false);
+	addEvent(ffocus,"click",login,false);// 点击“关注”弹出登录界面
 	// 点击关注，打开登录界面
 	function login(){
 		if(cookie.getCookie().loginSuc != "true") show(mlogin);
@@ -454,12 +463,12 @@ var GLOBAL = {};
 	// 课程列表构造函数
 	var template = '<li class="cl-item j-shadow" name="1";>\
 						<img src="" class="cl-img">\
-						<div class="cl-data">\
-							<h4 class="cl-title j-text">混音全揭秘 舞曲实战篇 揭秘音乐揭秘..</h4>\
+						<article class="cl-data">\
+							<header class="cl-title j-text">混音全揭秘 舞曲实战篇 揭秘音乐揭秘..</header>\
 							<h5 class="cl-provider j-space">音频帮</h5>\
 							<p class="j-space"><em class="cl-num">510</em></p>\
 							<p class="j-space"><strong class="cl-price">¥ 800.0</strong></p>\
-						</div>\
+						</article>\
 					</li>';
 	var argument = {
 		pageNo: 1,

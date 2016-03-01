@@ -3,7 +3,8 @@
  *编码：UTF-8 
  *flexnav布局 
  *注释规范：块状注释，缩进1格，位于注释内容上方；单行注释，注释文字两侧加空格，位于注释内容上方；行内注释，位于分号后面，注释文字两侧加空格
- *命名规范：语义化命名，g-前缀为布局样式，m-前缀为模块样式，f-前缀为模块中具有多态的元素
+ *命名规范：语义化命名，g-前缀为布局样式，m-前缀为模块样式，f-前缀为模块中具有多态的元素 j-为功能性样式。
+ *选择器规范：元素 + 元素的父元素 + 最外层容器，若父元素与最外层容器相同，则只写两个选择器。
  */
 
 /* 顶部提示栏 */
@@ -32,98 +33,30 @@
 .g-nav .nav a:hover{color: #309324;}
 .g-nav .nav .search:hover{background: url(../image/sprite.png) -271px -3px no-repeat;}
 
-/* m-tpbd布局 */
-/* m-slide布局 */
-.g-tpbd{
-	overflow: hidden;
-}
-.g-tpbd .m-slide{	
-	position: relative;
-	left: 50%;
-	margin-left: -808px;
-	margin-top: 0px;
-	width: 1616px;
-	height: 460px;
-}
-.g-tpbd .m-slide .f-img{
-	width: 100%;
-	height: 100%;
-}
-.g-tpbd .m-slide .f-slide{
-	position: absolute; 
-	left: 50%;
-	bottom: 20px;
-	height: 10px;
-	margin-left: -26px;
-}
-.g-tpbd .m-slide .f-slide i{
-	float: left;
-    width: 10px;
-    height: 10px;
-	background-color: white;
-    border-radius: 50%;   
-}
-.g-tpbd .m-slide .f-slide i+i{
-	margin-left: 11px;
-}
+/* m-tpbd上半部主体布局 */
+/* m-slide轮播头图布局 */
+.g-tpbd{overflow: hidden;}
+/* 下面的样式，使用相对布局，右移父元素宽的一半，再利用margin移回原位，则使得图片可以从两侧等量消失在窗口外 */
+.g-tpbd .m-slide{position: relative; left: 50%; width: 1616px; height: 460px; margin-left: -808px; margin-top: 0px;}
+.g-tpbd .m-slide .f-img{width: 100%; height: 100%;}
+.g-tpbd .m-slide .f-slide{position: absolute; left: 50%; bottom: 20px; height: 10px; margin-left: -26px;}
+.g-tpbd .f-slide i{float: left; width: 10px; height: 10px; background-color: white; border-radius: 50%;}
+.g-tpbd .f-slide i+i{margin-left: 11px;}
 
 /* m-prdt布局 */
-.g-tpbd .m-prdt{
-	height: 298px;
-}
+.g-tpbd .m-prdt{height: 298px;}
 
 /* 产品信息布局 */
-.g-tpbd .m-prdt .f-prdt{
-	height: 100%;
-	width: 1206px;
-	margin: 0 auto;
-}
-.g-tpbd .m-prdt .f-list{
-	width: 424px;
-	height: 100%;
-	float: left;
-}
-.g-tpbd .m-prdt .f-list .f-image{
-	float: left;
-	width: 86px;
-	height: 100%;
-	margin-right: 20px;
-}
-.g-tpbd .m-prdt .f-list .f-image .image{
-	width: 81px;
-	height: 81px;
-	margin-left: 5px;
-	margin-top: 67px;
-	background: url(../image/sprite.png) -4px -111px no-repeat;
-}
-.g-tpbd .m-prdt .f-list .side{
-	overflow: hidden;
-	height: 100%;
-}
-.g-tpbd .m-prdt .f-list .side .title{
-	height: 22px;
-	margin-top: 61px;
-	line-height: 22px;
-	font-size: 22px;
-}
-.g-tpbd .m-prdt .para{
-	width: 238px;
-	height: 98px;
-	margin-top: 20px;
-	font-size: 14px;
-	line-height: 24px;
-	text-align: justify;
-}
-.g-tpbd .m-prdt .more{
-	float: left;
-	height: 14px;
-	margin-top: 35px;
-	font-size: 14px;
-	line-height: 14px;
-}
-.g-tpbd .m-prdt .more:hover{
-	text-decoration: underline;
-}
+.g-tpbd .m-prdt .f-prdt{height: 100%; width: 1206px; margin: 0 auto;}
+.g-tpbd .m-prdt .f-list{float: left; width: 424px; height: 100%;}
+.g-tpbd .f-list .f-image{float: left; width: 86px; height: 100%; margin-right: 20px;}
+.g-tpbd .f-image .image{width: 81px; height: 81px; margin-left: 5px; margin-top: 67px; background: url(../image/sprite.png) -4px -111px no-repeat;}
+.g-tpbd .f-list .side{overflow: hidden; height: 100%;}
+.g-tpbd .side .title{height: 22px; margin-top: 61px; line-height: 22px; font-size: 22px;}
+.g-tpbd .m-prdt .para{width: 238px; height: 98px; margin-top: 20px; font-size: 14px; line-height: 24px; text-align: justify;}
+.g-tpbd .m-prdt .more{float: left; height: 14px; margin-top: 35px; font-size: 14px; line-height: 14px;}
+
+.g-tpbd .m-prdt .more:hover{text-decoration: underline;}
 
 /* 工作环境展示布局 */
 .g-tpbd .envt-coner{
@@ -706,8 +639,6 @@ Copyright (c) 2015 Daniel Eden
 }
 /* 当画面小于等于960px时，控制背景颜色，背景图片覆盖全部的位置 */
 @media screen and (max-width: 1000px){
-	.body{
-		width: 1000px;
-	}
+	.body{width: 1000px;}
 }
 
