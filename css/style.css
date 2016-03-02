@@ -47,38 +47,25 @@
 .g-tpbd .m-prdt{height: 298px;}
 
 /* 产品信息布局 */
-.g-tpbd .m-prdt .f-prdt{height: 100%; width: 1206px; margin: 0 auto;}
+.g-tpbd .m-prdt .prdt{height: 100%; width: 1206px; margin: 0 auto;}
 .g-tpbd .m-prdt .f-list{float: left; width: 424px; height: 100%;}
 .g-tpbd .f-list .f-image{float: left; width: 86px; height: 100%; margin-right: 20px;}
 .g-tpbd .f-image .image{width: 81px; height: 81px; margin-left: 5px; margin-top: 67px; background: url(../image/sprite.png) -4px -111px no-repeat;}
-.g-tpbd .f-list .side{overflow: hidden; height: 100%;}
-.g-tpbd .side .title{height: 22px; margin-top: 61px; line-height: 22px; font-size: 22px;}
-.g-tpbd .m-prdt .para{width: 238px; height: 98px; margin-top: 20px; font-size: 14px; line-height: 24px; text-align: justify;}
-.g-tpbd .m-prdt .more{float: left; height: 14px; margin-top: 35px; font-size: 14px; line-height: 14px;}
-
-.g-tpbd .m-prdt .more:hover{text-decoration: underline;}
+.g-tpbd .f-list .f-side{overflow: hidden; height: 100%;}
+.g-tpbd .f-side .f-title{height: 22px; margin-top: 61px; line-height: 22px; font-size: 22px;}
+.g-tpbd .f-side .f-para{width: 238px; height: 98px; margin-top: 20px; font-size: 14px; line-height: 24px; text-align: justify;}
+.g-tpbd .f-side .f-more{float: left; height: 14px; margin-top: 35px; font-size: 14px; line-height: 14px;}
+/* 了解更多，hover时显示下划线 */
+.g-tpbd .f-side .f-more:hover{text-decoration: underline;}
 
 /* 工作环境展示布局 */
-.g-tpbd .envt-coner{
-	margin: 0 auto;
-}
-.g-tpbd .m-envt{
-	position: relative;
-	left: 50%;
-	margin-left: -808px;
-	width: 1616px;
-	height: 220px;
-	background: #F6F6F6;
-}
-.g-tpbd .m-envt .f-evnt{
-	margin-right: 4px;
-}
+.g-tpbd .m-envt{position: relative; left: 50%; margin-left: -808px;/* 为了使图片从两边对称离开窗口 */ width: 1616px; height: 220px; background: #F6F6F6;}
+.g-tpbd .m-envt .f-evnt{margin-right: 4px;}
 
 /* m-mbd布局 */
 .g-mbd{
 	text-align: left;
-/*	overflow: hidden;
-*/	background-color: #F6F6F6;
+	background-color: #F6F6F6;
 }
 .g-mbd .f-middle{
 	width: 1206px;

@@ -258,7 +258,9 @@ var GLOBAL = {};
 })();
 // 产品展示组件
 (function(){
-	var fprdt = $("fprdt");
+	// 获得产品展示区域外框
+	var prdt = $("prdt");
+	// 产品信息的构造函数，包括产品的标题，内容，以及超链接等信息
 	function Product(title,content,href,src){
 		this.title = title;
 		this.content = content;
@@ -267,45 +269,54 @@ var GLOBAL = {};
 							<div class="f-image">\
 								<div class="image"></div>\
 							</div>\
-							<div class="side">\
-								<h3 class="title">' + this.title + '</h3>\
-								<p class="para">' + this.content + '</p>\
-								<a href="' + this.href + '" class="more" target="_blank">了解更多</a>\
+							<div class="f-side">\
+								<h3 class="f-title">' + this.title + '</h3>\
+								<p class="f-para">' + this.content + '</p>\
+								<a href="' + this.href + '" class="f-more" target="_blank">了解更多</a>\
 							</div>\
 							</div>';
 	}
+	// 创建三个展示产品的信息
 	var product1 = new Product("网易公开课","推出国内外名校公开课,涉及广泛的学科,名校老师认真讲解深度剖析,网易视频公开课频道搭建起强有力的网络视频教学平台。"
 								,"http://open.163.com/");
 	var product2 = new Product("云课堂","网易旗下大型在线学习平台,该平台面向学习者提供海量免费、优质课程,创新的个性学习体验,自由开放的交流互动环境。",
 								"http://study.163.com/");
 	var product3 = new Product("中国大学MOOC","是爱课程网携手云课堂打造的在线学习平台,每一个有提升愿望的人,都可以在这里学习中国最好的大学课程,学完还能获得认证证书。",
 								"http://www.icourse163.org/");
+	// 将创建好的对象转换为DOM节点
 	var node1 = html2node(product1.template);
 	var node2 = html2node(product2.template);
 	var node3 = html2node(product3.template);
+	// 更改其背景信息，并将最右侧元素的宽设为auto，防止超出界限
 	node3.style.width = "auto";
 	node2.children[0].children[0].style.background = "url(image/sprite.png) -117px -111px no-repeat"
 	node3.children[0].children[0].style.background = "url(image/sprite.png) -230px -111px no-repeat"
-	fprdt.appendChild(node1);
-	fprdt.appendChild(node2);
-	fprdt.appendChild(node3);
+	// 将元素添加到父节点上
+	prdt.appendChild(node1);
+	prdt.appendChild(node2);
+	prdt.appendChild(node3);
 })();
 // 工作环境图片组件
 (function(){
+	// 取出工作环境父节点
 	var menvt = $("menvt");
 	var img = new Envt("image/envt1.jpg");
 	var src = "image/envt";
-	for(i=1;i<6;i++){
-		var node = html2node(img.template);
-		node.src = src + i + ".jpg";
-		if(i == 5){
-			node.style.marginRight = "0px";
-		}
-		menvt.appendChild(node);
-	}
+	// 工作环境只是图片，所以构造函数只用<img>即可
 	function Envt(src){
 		this.src = src;
 		this.template = '<img src="' + this.src + '" class="f-evnt">';
+	}
+	// 为5个图片添加图片地址
+	for(i=1;i<6;i++){
+		var node = html2node(img.template);
+		node.src = src + i + ".jpg";
+		// 若是最后一个图片，无右边距
+		if(i == 5){
+			node.style.marginRight = "0px";
+		}
+		// 将创建好的元素添加进DOM
+		menvt.appendChild(node);
 	}
 })();
 // 视频播放组件
