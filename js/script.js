@@ -470,7 +470,69 @@ var GLOBAL = {};
 	 	var intervalID = setInterval(step, 10);
 	 }
 })();
-(function(){
+// 课程主体部分分为四个模块：悬浮窗口，页面选择器，页面加载器和类型切换tab
+// 悬浮窗口模块
+namespace("FloatWin",[],function(){
+	// floatWin弹窗显示课程信息
+	var floatWin = $("floatWin");
+	addEvent(floatWin,"mouseleave",function(event){
+		// 移出课程窗口，隐藏课程详情弹窗
+		if(cssStyle(winWidth).width == "960px") 	this.style.display = "none";
+		},false);
+	// 取得屏幕宽度的方法
+	var winWidth = $("bottom");
+	function showWin(position, index){
+		setPosition(position,index);
+		setClass(getData(index));
+
+	}	
+	// 将弹窗课程窗口设置到对应的位置上去
+	function setPosition(position,index){
+		floatWin.style.top = position.top  + "px";
+		if(cssStyle(winWidth).width != "960px"){
+			// 如果在宽屏下，最右的一列向左侧浮动
+			if((index+1)%4 == 0){
+				floatWin.style.left = position.left - constant.left() + "px";
+			}else{
+				// 其他的向右侧浮动
+				floatWin.style.left = position.left + constant.right() + "px";
+			}
+		}else{
+			// 如果是窄屏浏览，根据窄屏的要求浮动
+			floatWin.style.left = position.left - constant.offset() + "px";
+			floatWin.style.top = position.top  - constant.offset() + "px";
+		}
+	}
+	// 将获取到的课程信息，复制到弹窗中
+	function setClass(data){
+		data[0].style.display = "";
+		data[1].src = data[7].url;
+		data[2].innerHTML = data[7].name;
+		data[3].innerHTML = data[7].description;
+		data[4].innerHTML = data[7].number + "人在学";
+		data[5].innerHTML = data[7].provider;
+		data[6].innerHTML = "分类：" + data[7].clclass;
+	}
+	// 获取目前选中的课程数据
+	function getData(index){
+		var img = $("floatImg");
+		var title = $("fttitle");
+		var des = $("botDes");
+		var num = $("ftnum");
+		var pro = $("ftpro");
+		var ftclass = $("ftclass");
+		var item = GLOBAL.list[index].data;
+		// 返回选中的元素
+		return [floatWin,img,title,des,num,pro,ftclass,item];
+	}
+	return{
+		showWin: showWin,
+		winWidth: winWidth,
+		floatWin: floatWin
+	}
+});
+// 页面加载模块
+namespace("Class",["FloatWin"],function(FloatWin){
 	// 课程列表构造函数
 	var template = '<li class="cl-item j-shadow" name="1";>\
 						<img src="" class="cl-img">\
@@ -505,7 +567,6 @@ var GLOBAL = {};
 
 		this._initEvent();
 	}
-	GLOBAL.floatWin = $("floatWin");
 	extend(ClassList.prototype,{
 		_layout: html2node(template),
 		olNode: $("clist"),
@@ -521,12 +582,12 @@ var GLOBAL = {};
 			addEvent(this.container,"mouseenter",function(event){
 				// 移入课程窗口时，显示课程详情弹窗
 				var tem = getPosition(this);
-				GLOBAL.showWin(tem, this.name);
+				FloatWin.showWin(tem, this.name);
 			},false);
 			addEvent(this.container,"mouseleave",function(event){
 				// 移出课程窗口，隐藏课程详情弹窗
-				if(cssStyle(GLOBAL.winWidth).width == "960px") return
-				GLOBAL.floatWin.style.display = "none";
+				if(cssStyle(FloatWin.winWidth).width == "960px") return
+				FloatWin.floatWin.style.display = "none";
 			},false);
 		},
 		append: function(){
@@ -536,12 +597,11 @@ var GLOBAL = {};
 			this.olNode.removeChild(this.container);
 		}
 	});
-	GLOBAL.ClassList = ClassList;
-	GLOBAL.list = [];
+	var list = [];
 	// 课程列表的回调函数
 	function showList(classes){
 		for(i=0;i<classes.list.length;i++){
-			var item = new GLOBAL.ClassList({
+			var item = new ClassList({
 				data:{
 					url: classes.list[i].middlePhotoUrl,
 					name: classes.list[i].name,
@@ -553,21 +613,26 @@ var GLOBAL = {};
 					provider: classes.list[i].provider
 				}
 			});
-			GLOBAL.list[i] = item;
-			GLOBAL.list[i].append();
+			list[i] = item;
+			list[i].append();
 			GLOBAL.pageNum = classes.totalPage;
 		}
+		GLOBAL.list = list;
 	}
-	GLOBAL.showList = showList;
-	ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",GLOBAL.showList,argument);
+	ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",showList,argument);
 	function clearList(){
 		for(i=0;i<GLOBAL.list.length;i++){
 			GLOBAL.list[i].remove();
 		}
 	}
-	GLOBAL.clearList = clearList;
-})();
-(function(){
+	return{
+		clearList: clearList,
+		showList: showList
+	}
+});
+// 页码选择器模块
+namespace("Pages",["Class"],function(Class){
+	var currentPage = 1;
 	// 页码选择器构造函数
 	function Page(index){
 		index = index || {};
@@ -587,43 +652,41 @@ var GLOBAL = {};
 	Page.prototype._initEvent = function(){
 		this.container.innerHTML = this.num;
 		addEvent(this.container,"click",function(){
-			GLOBAL.currentPage = this.innerHTML;
-			GLOBAL.changePage();
+			currentPage = this.innerHTML;
+			changePage();
 		});
 	}
-	GLOBAL.currentPage = 1;
+	currentPage = 1;
 	function changePage(action){
 		try{
 			// 如果短时间内多次点击，则会出现classList未加载成功的情况
-			GLOBAL.clearList();
+			Class.clearList();
 		}catch(ex){
 			console.log(ex);
 			// 验证多次点击的是上一页或者下一页，并恢复操作，返回
-			if(action == "plus") GLOBAL.currentPage--;
-			if(action == "minus") GLOBAL.currentPage++;
+			if(action == "plus") currentPage--;
+			if(action == "minus") currentPage++;
 			return;
 		}
 		// 清空页面选择器
-		GLOBAL.clearPage();
+		clearPage();
 		// 重置页面选择器
-		GLOBAL.setPage(Number(GLOBAL.currentPage));
+		setPage(Number(currentPage));
 		// 发出新的请求
-		ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",GLOBAL.showList,{
-			pageNo: GLOBAL.currentPage,
+		ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",Class.showList,{
+			pageNo: currentPage,
 			psize: 20, 
 			type: GLOBAL.classType
 		});
 	}
-	GLOBAL.changePage = changePage;
-	GLOBAL.Page = Page;
 	function clearPage(){
-		GLOBAL.page.forEach(function(item){
+		pageList.forEach(function(item){
 			item.remove();
 		});
+		pageList = [];
 	}
-	GLOBAL.clearPage = clearPage;
+	var pageList = [];
 	function setPage(index){
-		GLOBAL.page = [];
 		var fr;
 		var to;
 		if(index < 8){
@@ -639,31 +702,34 @@ var GLOBAL = {};
 		helper(fr,to,index);
 		function helper(fr, to, index){
 			for(i=fr;i<=to;i++){
-				var page = new GLOBAL.Page({num: i});
+				var page = new Page({num: i});
 				if(i==index) addClass(page.container, "j-selectpage");
 				page.append();
-				GLOBAL.page[i] = page;
+				pageList[i] = page;
 			}
 		}
 	}
 	setPage(1);
-	GLOBAL.setPage = setPage;
 	// 上一页，下一页选择器
 	var lastPage = $("lastPage");
 	var nextPage = $("nextPage");
 	addEvent(lastPage,"click",function(){
-		if(GLOBAL.currentPage == 1) return;
-		GLOBAL.currentPage--;
+		if(currentPage == 1) return;
+		currentPage--;
 		changePage("minus");
 	});
 	addEvent(nextPage,"click",function(){
-		if(GLOBAL.currentPage == GLOBAL.pageNum) return;
-		GLOBAL.currentPage++;
+		if(currentPage == GLOBAL.pageNum) return;
+		currentPage++;
 		changePage("plus");
 	})
-})();
+	return{
+		clearPage: clearPage,
+		setPage: setPage
+	}
+});
 // tab选择器事件加载
-(function(){
+namespace("Tab",["Class","Pages"],function(Class,Pages){
 	GLOBAL.classType = 10;
 	// 两个tab按钮事件加载
 	var leftTab = $("lftab");
@@ -688,65 +754,10 @@ var GLOBAL = {};
 				GLOBAL.classType = 20;
 				delClass($("lftab"), "j-selected");
 			}
-			GLOBAL.currentPage = 1;
-			GLOBAL.clearList();
-			GLOBAL.clearPage();
-			GLOBAL.setPage(1);
-			ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",GLOBAL.showList,argument);
+			Class.clearList();
+			Pages.clearPage();
+			Pages.setPage(1);
+			ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",Class.showList,argument);
 		}
 	}
-})();
-(function(){
-	// floatWin弹窗显示课程信息
-	GLOBAL.showWin = showWin;
-	addEvent(GLOBAL.floatWin,"mouseleave",function(event){
-		// 移出课程窗口，隐藏课程详情弹窗
-		if(cssStyle(GLOBAL.winWidth).width == "960px") 	this.style.display = "none";
-		},false);
-	// 取得屏幕宽度的方法
-	GLOBAL.winWidth = $("bottom");
-	function showWin(position, index){
-		GLOBAL.setPosition(position,index);
-		GLOBAL.setClass(GLOBAL.getData(index));
-
-	}	
-	// 将弹窗课程窗口设置到对应的位置上去
-	GLOBAL.setPosition = function(position,index){
-		GLOBAL.floatWin.style.top = position.top  + "px";
-		if(cssStyle(GLOBAL.winWidth).width != "960px"){
-			// 如果在宽屏下，最右的一列向左侧浮动
-			if((index+1)%4 == 0){
-				GLOBAL.floatWin.style.left = position.left - constant.left() + "px";
-			}else{
-				// 其他的向右侧浮动
-				GLOBAL.floatWin.style.left = position.left + constant.right() + "px";
-			}
-		}else{
-			// 如果是窄屏浏览，根据窄屏的要求浮动
-			GLOBAL.floatWin.style.left = position.left - constant.offset() + "px";
-			GLOBAL.floatWin.style.top = position.top  - constant.offset() + "px";
-		}
-	}
-	// 将获取到的课程信息，复制到弹窗中
-	GLOBAL.setClass = function(data){
-		data[0].style.display = "";
-		data[1].src = data[7].url;
-		data[2].innerHTML = data[7].name;
-		data[3].innerHTML = data[7].description;
-		data[4].innerHTML = data[7].number + "人在学";
-		data[5].innerHTML = data[7].provider;
-		data[6].innerHTML = "分类：" + data[7].clclass;
-	}
-	// 获取目前选中的课程数据
-	GLOBAL.getData = function(index){
-		var img = $("floatImg");
-		var title = $("fttitle");
-		var des = $("botDes");
-		var num = $("ftnum");
-		var pro = $("ftpro");
-		var ftclass = $("ftclass");
-		var item = GLOBAL.list[index].data;
-		// 返回选中的元素
-		return [GLOBAL.floatWin,img,title,des,num,pro,ftclass,item];
-	}
-})();
+});

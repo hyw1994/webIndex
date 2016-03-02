@@ -230,6 +230,22 @@ var constant = (function(){
 // 	GLOBAL.setPage(currentPage);
 // 	ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",GLOBAL.showList,argument);
 // }
+// 
+// 命名空间，用来实现模块化应用。
+var namespace = (function(){//namespace函数用来缓存所有的模块，并且返回当前组件。
+    var cache = {};//缓存所有模块
+    function createModule(name, deps, definition){
+        if(arguments.length == 1) return cache[name];
+
+        deps = deps.map(function(depName){
+            return cache[depName];//将依赖组件从cache中抽出
+        })
+        cache[name] = definition.apply(null, deps)//将依赖组件当成参数传入调用函数中，这样，调用函数中便有了依赖组件。
+
+        return cache[name];
+    }
+    return createModule;
+})()
 
 /*
  HTML5 Shiv v3.7.0 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
