@@ -394,7 +394,6 @@ var GLOBAL = {};
 								<p class="number">21567</p>\
 							</div>\
 						</li>';
-	ajax("get","http://study.163.com/webDev/hotcouresByCategory.htm\\",showList);
 	function List(options){
 		options = options || {};
 		// 让每一个模版都是独一无二的存在
@@ -469,18 +468,21 @@ var GLOBAL = {};
 	 	}
 	 	var intervalID = setInterval(step, 10);
 	 }
+	 ajax("get","http://study.163.com/webDev/hotcouresByCategory.htm\\",showList);
 })();
+
 // 课程主体部分分为四个模块：悬浮窗口，页面选择器，页面加载器和类型切换tab
 // 悬浮窗口模块
 namespace("FloatWin",[],function(){
 	// floatWin弹窗显示课程信息
 	var floatWin = $("floatWin");
+	// bottom元素对宽度敏感，所以用bottom元素的宽来表示页面的宽度
+	var winWidth = $("bottom");
+	// 移出弹窗课程窗口(小窗口模式下)，隐藏课程详情弹窗
 	addEvent(floatWin,"mouseleave",function(event){
-		// 移出课程窗口，隐藏课程详情弹窗
 		if(cssStyle(winWidth).width == "960px") 	this.style.display = "none";
 		},false);
-	// 取得屏幕宽度的方法
-	var winWidth = $("bottom");
+	// 当鼠标移入的时候，显示课程弹窗
 	function showWin(position, index){
 		setPosition(position,index);
 		setClass(getData(index));
@@ -505,6 +507,7 @@ namespace("FloatWin",[],function(){
 	}
 	// 将获取到的课程信息，复制到弹窗中
 	function setClass(data){
+		// data[7]里存的是当前课程的信息列表
 		data[0].style.display = "";
 		data[1].src = data[7].url;
 		data[2].innerHTML = data[7].name;
@@ -586,6 +589,7 @@ namespace("Class",["FloatWin"],function(FloatWin){
 			},false);
 			addEvent(this.container,"mouseleave",function(event){
 				// 移出课程窗口，隐藏课程详情弹窗
+				// 当窗口是960px时，鼠标移除也不隐藏，要等鼠标移出弹窗时，再隐藏
 				if(cssStyle(FloatWin.winWidth).width == "960px") return
 				FloatWin.floatWin.style.display = "none";
 			},false);
@@ -722,7 +726,8 @@ namespace("Pages",["Class"],function(Class){
 		if(currentPage == GLOBAL.pageNum) return;
 		currentPage++;
 		changePage("plus");
-	})
+	});
+	// 暴露出的接口，清空课程列表和加载课程列表
 	return{
 		clearPage: clearPage,
 		setPage: setPage

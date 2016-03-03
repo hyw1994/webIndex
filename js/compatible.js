@@ -133,12 +133,23 @@ function delClass(ele,className){
 // ajax对象事件封装
 function ajax(method,url,call,argument){
 	var data;
-	var xhr = new XMLHttpRequest();
+	var xhr = (function(){
+		var xmlhttp;
+		try{
+			// 对IE9及IE8以下浏览器进行兼容
+			xmlhttp = new ActiveXObject('MSXML2.XMLHttp');
+		}catch(ex){
+			xmlhttp = new XMLHttpRequest();
+		};
+		return xmlhttp;
+	})();
 	if(argument){
+		// 对搜索数据进行格式化
 		argument = serialize(argument);
 		url = url + "?" + argument;
 	}
 	xhr.open(method, url, true);
+	// 回调函数
 	if(!IE){
 		xhr.onload = callback;
 	}else{
@@ -246,7 +257,35 @@ var namespace = (function(){//namespace函数用来缓存所有的模块，并�
     }
     return createModule;
 })()
-
+/*
+以下代码是Function.prototype.bind的兼容实现
+首先判断浏览器是否支持，若不支持，创建Function.prototype.bind方法。
+将变量_method赋值为this，即调用.bind的方法
+将传入的参数转换为数组args
+取得数组中的第一个元素，即method的调用对象
+返回一个匿名函数
+*/
+if(!Function.prototype.bind){
+    Function.prototype.bind = function(){
+        var _method = this;//将调用的方法存给_method变量
+    	var args = Array.prototype.slice.apply(arguments);//将传入的参数存在数组中
+    	var object = args.shift();//取得参数的第一个元素，即即将调用method的对象
+   	 	return function(){//返回一个匿名函数
+        	return _method.apply(object,args);//这个匿名函数在执行后，返回_method.apply方法，作用对象为object，作用参数为args
+  	  }
+    }
+}
+// IE8 arr.map()方法兼容
+if(!Array.prototype.map){
+	Array.prototype.map = function(callback){
+		var arr = [];
+		var _that = this;
+		for(var i=0;i<_that.length;i++){
+			arr[i] = callback(_that[i]);
+		}
+		return arr;
+	}
+}
 /*
  HTML5 Shiv v3.7.0 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
 */
