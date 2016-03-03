@@ -482,13 +482,18 @@ namespace("FloatWin",[],function(){
 	addEvent(floatWin,"mouseleave",function(event){
 		if(cssStyle(winWidth).width == "960px") 	this.style.display = "none";
 		},false);
-	// 当鼠标移入的时候，显示课程弹窗
+	/* 当鼠标移入的时候，显示课程弹窗
+	 * 函数含有两个参数：计算过的元素位置，以及元素的index
+	 *将元素的位置给予浮层，使浮层显示在对应的位置
+	 *并根据index获得要显示的数据
+	 */
 	function showWin(position, index){
 		setPosition(position,index);
 		setClass(getData(index));
-
 	}	
-	// 将弹窗课程窗口设置到对应的位置上去
+	/* 将弹窗课程窗口设置到对应的位置上去
+	 * 根据position来定位，根据index来判断是否要显示在左侧，避免超出界面
+	 */
 	function setPosition(position,index){
 		floatWin.style.top = position.top  + "px";
 		if(cssStyle(winWidth).width != "960px"){
@@ -505,6 +510,13 @@ namespace("FloatWin",[],function(){
 			floatWin.style.top = position.top  - constant.offset() + "px";
 		}
 	}
+	// 获取浮动窗的图片，标题，描述以及人数和提供商，分类信息
+	var img = $("floatImg");
+	var title = $("fttitle");
+	var des = $("botDes");
+	var num = $("ftnum");
+	var pro = $("ftpro");
+	var ftclass = $("ftclass");
 	// 将获取到的课程信息，复制到弹窗中
 	function setClass(data){
 		// data[7]里存的是当前课程的信息列表
@@ -518,22 +530,18 @@ namespace("FloatWin",[],function(){
 	}
 	// 获取目前选中的课程数据
 	function getData(index){
-		var img = $("floatImg");
-		var title = $("fttitle");
-		var des = $("botDes");
-		var num = $("ftnum");
-		var pro = $("ftpro");
-		var ftclass = $("ftclass");
 		var item = GLOBAL.list[index].data;
 		// 返回选中的元素
 		return [floatWin,img,title,des,num,pro,ftclass,item];
 	}
+	// 输出的接口为：显示浮动窗函数，窗口的宽度以及浮动窗元素
 	return{
 		showWin: showWin,
 		winWidth: winWidth,
 		floatWin: floatWin
 	}
 });
+
 // 页面加载模块
 namespace("Class",["FloatWin"],function(FloatWin){
 	// 课程列表构造函数
@@ -565,7 +573,7 @@ namespace("Class",["FloatWin"],function(FloatWin){
 		this.num = this.container.querySelector(".cl-num");
 		// 课程价格
 		this.price = this.container.querySelector(".cl-price");
-
+		// 拓展对象和方法
 		extend(this,options);
 
 		this._initEvent();
@@ -575,18 +583,34 @@ namespace("Class",["FloatWin"],function(FloatWin){
 		olNode: $("clist"),
 		// 初始化函数
 		_initEvent: function(){
+			// 赋值图片地址，标题，人数，价格，提供商等信息
 			this.image.src = this.data.url;
 			this.title.innerHTML = this.data.name;
 			this.title.title = this.data.name;
 			this.num.innerHTML = this.data.number + "&nbsp";
 			this.price.innerHTML = "¥" + " " + this.data.price;
 			this.provider.innerHTML = this.data.provider;
+			// 将index信息保存在name属性中
 			this.container.name = this.data.index;
+			
+			/* 
+			 * 给每一个元素添加mouseenter事件，这个事件使浮动窗显示出来
+			 * 因为IE8事件中this总是指向window，所以监测是否为IE8
+			 * 如果是IE8，则取得event.srcElement，即其他版本浏览器中的this
+			 */
 			addEvent(this.container,"mouseenter",function(event){
+				var tem;
 				// 移入课程窗口时，显示课程详情弹窗
-				var tem = getPosition(this);
-				FloatWin.showWin(tem, this.name);
+				if(isIE){
+					event = window.event;
+					tem = getPosition(event.srcElement);
+					FloatWin.showWin(tem,event.srcElement.name);
+				}else{
+					tem = getPosition(this);
+					FloatWin.showWin(tem, this.name);
+				}
 			},false);
+			// 如果窗口是960px即小窗口模式，不执行任何操作，别的情况下，隐藏浮动窗口
 			addEvent(this.container,"mouseleave",function(event){
 				// 移出课程窗口，隐藏课程详情弹窗
 				// 当窗口是960px时，鼠标移除也不隐藏，要等鼠标移出弹窗时，再隐藏
@@ -594,13 +618,16 @@ namespace("Class",["FloatWin"],function(FloatWin){
 				FloatWin.floatWin.style.display = "none";
 			},false);
 		},
+		// 添加元素方法
 		append: function(){
 			this.olNode.appendChild(this.container);
 		},
+		// 移除元素方法
 		remove: function(){
 			this.olNode.removeChild(this.container);
 		}
 	});
+	// 用来保存生成的元素列表信息，并保存到全局中，供浮动窗口获取当前列表的数据
 	var list = [];
 	// 课程列表的回调函数
 	function showList(classes){
@@ -623,19 +650,23 @@ namespace("Class",["FloatWin"],function(FloatWin){
 		}
 		GLOBAL.list = list;
 	}
+	// 获取课程列表
 	ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",showList,argument);
+	// 删除列表方法，即删除所有的课程节点
 	function clearList(){
 		for(i=0;i<GLOBAL.list.length;i++){
 			GLOBAL.list[i].remove();
 		}
 	}
+	// 暴露接口，清空课程列表方法以及显示课程列表方法。
 	return{
 		clearList: clearList,
 		showList: showList
 	}
 });
+
 // 页码选择器模块
-namespace("Pages",["Class"],function(Class){
+namespace("Pages",["Class","FloatWin"],function(Class,FloatWin){
 	var currentPage = 1;
 	// 页码选择器构造函数
 	function Page(index){
@@ -644,6 +675,7 @@ namespace("Pages",["Class"],function(Class){
 		this.container = this._layout.cloneNode(true);
 		this._initEvent();
 	}
+	// 构造函数结构同页面加载模块
 	Page.prototype._layout = html2node('<div class="page-num">2</div>');
 	Page.prototype.pageSelector = $("pageSelector");
 	Page.prototype.nextPage = $("nextPage");
@@ -655,12 +687,22 @@ namespace("Pages",["Class"],function(Class){
 	}
 	Page.prototype._initEvent = function(){
 		this.container.innerHTML = this.num;
-		addEvent(this.container,"click",function(){
-			currentPage = this.innerHTML;
+		addEvent(this.container,"click",function(event){
+			if(isIE){
+				event = window.event;
+				currentPage = event.srcElement.innerHTML;
+			}else{
+				currentPage = this.innerHTML;
+			}
 			changePage();
 		});
 	}
-	currentPage = 1;
+	/* 
+	 * 改变页面方法
+	 * 先判断是否点击多次上一页和下一页，若点了多次，则还原状态
+	 * 清空选择器，并重新加载
+	 * 根据当前页面序号，重新加载课程列表
+	 */
 	function changePage(action){
 		try{
 			// 如果短时间内多次点击，则会出现classList未加载成功的情况
@@ -676,20 +718,28 @@ namespace("Pages",["Class"],function(Class){
 		clearPage();
 		// 重置页面选择器
 		setPage(Number(currentPage));
+		// 判断当前界面，若当前界面是960px模式，则只获取15个课程/页，其他情况获取20个
+		if(cssStyle(FloatWin.winWidth).width == "960px"){
+			var psize = 15;
+		}else{
+			var psize = 20;
+		}
 		// 发出新的请求
 		ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",Class.showList,{
 			pageNo: currentPage,
-			psize: 20, 
+			psize: psize, 
 			type: GLOBAL.classType
 		});
 	}
+	var pageList = [];
+	// 清空选择器列表
 	function clearPage(){
 		pageList.forEach(function(item){
 			item.remove();
 		});
+		// 将选择器列表清空
 		pageList = [];
 	}
-	var pageList = [];
 	function setPage(index){
 		var fr;
 		var to;
@@ -713,10 +763,10 @@ namespace("Pages",["Class"],function(Class){
 			}
 		}
 	}
-	setPage(1);
 	// 上一页，下一页选择器
 	var lastPage = $("lastPage");
 	var nextPage = $("nextPage");
+	// 如果是边界，则不采取任何操作，否则，执行上一页或者下一页
 	addEvent(lastPage,"click",function(){
 		if(currentPage == 1) return;
 		currentPage--;
@@ -727,12 +777,15 @@ namespace("Pages",["Class"],function(Class){
 		currentPage++;
 		changePage("plus");
 	});
+	// 页面刚加载的时候，加载默认的选择器
+	setPage(1);
 	// 暴露出的接口，清空课程列表和加载课程列表
 	return{
 		clearPage: clearPage,
 		setPage: setPage
 	}
 });
+
 // tab选择器事件加载
 namespace("Tab",["Class","Pages"],function(Class,Pages){
 	GLOBAL.classType = 10;
@@ -749,16 +802,19 @@ namespace("Tab",["Class","Pages"],function(Class,Pages){
 			psize: 20, 
 			type: 20
 		}),false);
+	// 判断点击的是哪一个，更改样式
 	function changeType(argument){
 		return function helper(){
-			addClass(this, "j-selected");
 			if(argument.type == 10){
 				GLOBAL.classType = 10;
-				delClass($("rttab"), "j-selected");
+				delClass(rightTab, "j-selected");
+				addClass(leftTab, "j-selected");
 			}else{
 				GLOBAL.classType = 20;
-				delClass($("lftab"), "j-selected");
+				delClass(leftTab, "j-selected");
+				addClass(rightTab,"j-selected");
 			}
+			// 重新加载课程列表和选择器
 			Class.clearList();
 			Pages.clearPage();
 			Pages.setPage(1);

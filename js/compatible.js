@@ -118,9 +118,12 @@ if(isIE){
 		});
 	});
 }
+	var name;
+
 // 添加className方法兼容
 function addClass(ele,className){
-	if(ele.className.indexOf(className) == -1){
+	name = String(ele.className);
+	if(name.indexOf(className) == -1){
 		(ele.classList)? ele.classList.add(className) : ele.className += " " + className;
 	}
 }
