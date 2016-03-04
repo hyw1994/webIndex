@@ -19,7 +19,7 @@ var GLOBAL = {};
 	}
 	// 关闭flex_nav，添加cookie
 	function close(){
-		cookie.setCookie("nav_hidden","true");
+		cookie.setCookie("nav_hidden", "true");
 		hide(flexnav);
 	}
 })();
@@ -30,7 +30,7 @@ var GLOBAL = {};
 	var slide = $("fslide");
 	var mslide = $("mslide");
 	// 获取slide下三个点选择器
-	var point = getElementsByClassName(slide,"point");
+	var point = getElementsByClassName(slide, "point");
 	// 图片和链接使用img + usemap来实现，imgHref即area元素，用来根据图片更改链接地址
 	var imgHref = document.getElementById("imgHref");
 	// 纪录更换图片的动画ID
@@ -38,16 +38,16 @@ var GLOBAL = {};
 	// 初始化图片index
 	var index = 1;
 	// 存储三张图片的href地址
-	var bannerHerf = ["http://open.163.com/","http://study.163.com/","http://www.icourse163.org/"];
+	var bannerHerf = ["http://open.163.com/", "http://study.163.com/", "http://www.icourse163.org/"];
 	// 调用轮播头图启用轮播
 	point[0].style.backgroundColor = "black";
-	nextImg(img,imgHref);
+	nextImg(img, imgHref);
 	// 鼠标移入时，动画停止
-	addEvent(mslide,"mouseover",pause,false);
+	addEvent(mslide, "mouseover", pause, false);
 	// 当鼠标移出时，动画开始播放
-	addEvent(mslide,"mouseleave",start,false);
+	addEvent(mslide, "mouseleave", start, false);
 	// 点击控件跳转代理
-	addEvent(slide,"click",jump,false);
+	addEvent(slide, "click", jump, false);
 	// 轮播图动画
 	function nextImg(element,imgHref){
 		intervalID = setInterval(step,5000);
@@ -81,7 +81,7 @@ var GLOBAL = {};
 				clearInterval(intervalID);//如果到了100，注销渐入效果
 			}
 		}
-		var intervalID = setInterval(step,10);//10*50=500ms，即渐入效果持续500ms，
+		var intervalID = setInterval(step, 10);//10*50=500ms，即渐入效果持续500ms，
 	}
 	// point元素初始化
 	function resetPoint(){
@@ -95,7 +95,7 @@ var GLOBAL = {};
 	}
 	// start函数用来继续轮播头图的播放
 	function start(){
-		nextImg(img,imgHref);//继续播放
+		nextImg(img, imgHref);//继续播放
 	}
 	// slide控件代理事件
 	function jump(event){
@@ -117,16 +117,20 @@ var GLOBAL = {};
 	// 点击关注，打开登录界面
 	function login(){
 		if(cookie.getCookie().loginSuc != "true") show(mlogin);
+		if(isIE) return;
 		animateClass(mlogin.firstElementChild, "zoomIn");
 	}
 	// 点击登陆窗口关闭按钮，关闭登录窗
 	addEvent(fclose,"click",f_close,false);
 	// 点击登录窗口的关闭按钮，关闭登录界面
 	function f_close(){
+		if(IE9 || isIE){
+			hide(mlogin);
+			return;
+		} 
 		animateClass(mlogin.firstElementChild, "zoomOut",function(){
 			hide(mlogin);
 		});
-		if(IE9) hide(mlogin);
 	}
 })();
 
@@ -137,7 +141,7 @@ var GLOBAL = {};
 	if(cookie.getCookie().loginSuc == "true"){
 		attention(1);
 	}
-	addEvent(form,"submit",test,true);
+	addEvent(form, "submit", test, true);
 	// 对输入的用户名和密码进行验证
 	function test(event){
 		event = event || window.event;
@@ -167,7 +171,7 @@ var GLOBAL = {};
 	}
 	// 如果输入的帐户不是测试账户，则替换此样式
 	function invalidInput(node){
-		addClass(node,"j-error");
+		addClass(node, "j-error");
 		node.focus();
 	}
 	// 弹出输入错误提示框
@@ -177,13 +181,13 @@ var GLOBAL = {};
 	// 验证成功，提交时，将按钮disable
 	function disableSubmit(disabled){
 		form.submit.disabled = !!disabled;
-		var method = !disabled? delClass(form.submit,"j-disabled") : addClass(form.submit,"j-disabled");
+		var method = !disabled? delClass(form.submit, "j-disabled") : addClass(form.submit, "j-disabled");
 	}
 	// 添加input事件代理，当重新输入信息时，清楚错误信息
 	if(IE){
-		addEvent(form,"keydown",clear,false);
+		addEvent(form, "keydown", clear, false);
 	}else{
-		addEvent(form,"input",clear,false);
+		addEvent(form, "input", clear, false);
 	}
 	function clear(){
 		var userName = form.userName;
@@ -194,7 +198,7 @@ var GLOBAL = {};
 	}
 	// 清楚信息函数
 	function clearInvalid(node){
-		delClass(node,"j-error");
+		delClass(node, "j-error");
 	}
 	// 清空输入框
 	function clearInput(node){
@@ -202,7 +206,7 @@ var GLOBAL = {};
 	}
 	// 登录成功，取回返回结果
 	var frame = $("result");
-	addEvent(frame,"load",getCode,false);
+	addEvent(frame, "load", getCode, false);
 	function getCode(event){
 		event = event || window.event;
 		try{
@@ -218,20 +222,24 @@ var GLOBAL = {};
 	}
 	// 当调用服务器登录接口成功时，执行此操作
 	function success(){
+		if(IE9 || isIE) {
+			hide($("mlogin"));
+			focus();
+			return;
+		}
 		animateClass(mlogin.firstElementChild, "zoomOut",function(){
 			hide($("mlogin"));
 		});
-		if(IE9) hide($("mlogin"));
 		focus();
 	}
 	// 登录成功之后，自动调用关注接口
 	function focus(){
 		document.forms[0].reset();
 		disableSubmit(false);
-		cookie.setCookie("loginSuc",true);
+		cookie.setCookie("loginSuc", true);
 		// 以下代码是因为IE8和9在xhr.open跨域时的错误，为了测试功能而存在的代码
 		try{				
-			ajax("get","http://study.163.com/webDev/attention.htm",attention);
+			ajax("get", "http://study.163.com/webDev/attention.htm", attention);
 		}catch(ex){
 			attention(1);
 		}
@@ -240,11 +248,11 @@ var GLOBAL = {};
 	function attention(data){
 		if(data == 1 || isIE){
 			var cancel = $("fcancel");
-			cookie.setCookie("followSuc",true);
+			cookie.setCookie("followSuc", true);
 			hide($("ffocus"));
 			show($("ffcoused"));
 			$("fnum").innerHTML = "粉丝：46";
-			addEvent(cancel,"click",logOf,false);
+			addEvent(cancel, "click", logOf, false);
 		}
 	}
 	// 点击取消按钮之后执行的注销操作
@@ -350,6 +358,10 @@ var GLOBAL = {};
 		_layout: html2node(template),
 		// 显示弹窗事件
 		show: function(){
+			if(isIE){
+				alert("您的浏览器不支持HTML5，请尽快更新");
+				return;
+			}
 			body.appendChild(this.container);
 			animateClass(this.wrap, this.animation.enter);
 		},
@@ -365,9 +377,9 @@ var GLOBAL = {};
 		},
 		// 初始化事件
 		_initEvent: function(){
-			addEvent(open,"click",this.show.bind(this),false);
+			addEvent(open,"click", this.show.bind(this),false);
 			var close = this.container.querySelector(".video-close");
-			addEvent(close,"click",this.hide.bind(this),false);
+			addEvent(close,"click", this.hide.bind(this),false);
 		}
 	});
 	// 初始化播放器
@@ -468,7 +480,7 @@ var GLOBAL = {};
 	 	}
 	 	var intervalID = setInterval(step, 10);
 	 }
-	 ajax("get","http://study.163.com/webDev/hotcouresByCategory.htm\\",showList);
+	 ajax("get", "http://study.163.com/webDev/hotcouresByCategory.htm\\", showList);
 })();
 
 // 课程主体部分分为四个模块：悬浮窗口，页面选择器，页面加载器和类型切换tab
@@ -479,7 +491,7 @@ namespace("FloatWin",[],function(){
 	// bottom元素对宽度敏感，所以用bottom元素的宽来表示页面的宽度
 	var winWidth = $("bottom");
 	// 移出弹窗课程窗口(小窗口模式下)，隐藏课程详情弹窗
-	addEvent(floatWin,"mouseleave",function(event){
+	addEvent(floatWin, "mouseleave", function(event){
 		if(cssStyle(winWidth).width == "960px") 	this.style.display = "none";
 		},false);
 	/* 当鼠标移入的时候，显示课程弹窗
@@ -488,13 +500,13 @@ namespace("FloatWin",[],function(){
 	 *并根据index获得要显示的数据
 	 */
 	function showWin(position, index){
-		setPosition(position,index);
+		setPosition(position, index);
 		setClass(getData(index));
 	}	
 	/* 将弹窗课程窗口设置到对应的位置上去
 	 * 根据position来定位，根据index来判断是否要显示在左侧，避免超出界面
 	 */
-	function setPosition(position,index){
+	function setPosition(position, index){
 		floatWin.style.top = position.top  + "px";
 		if(cssStyle(winWidth).width != "960px"){
 			// 如果在宽屏下，最右的一列向左侧浮动
@@ -532,7 +544,7 @@ namespace("FloatWin",[],function(){
 	function getData(index){
 		var item = GLOBAL.list[index].data;
 		// 返回选中的元素
-		return [floatWin,img,title,des,num,pro,ftclass,item];
+		return [floatWin, img, title, des, num, pro, ftclass, item];
 	}
 	// 输出的接口为：显示浮动窗函数，窗口的宽度以及浮动窗元素
 	return{
@@ -651,7 +663,7 @@ namespace("Class",["FloatWin"],function(FloatWin){
 		GLOBAL.list = list;
 	}
 	// 获取课程列表
-	ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",showList,argument);
+	ajaxClass(showList, argument);
 	// 删除列表方法，即删除所有的课程节点
 	function clearList(){
 		for(i=0;i<GLOBAL.list.length;i++){
@@ -666,7 +678,7 @@ namespace("Class",["FloatWin"],function(FloatWin){
 });
 
 // 页码选择器模块
-namespace("Pages",["Class","FloatWin"],function(Class,FloatWin){
+namespace("Pages", ["Class", "FloatWin"], function(Class,FloatWin){
 	var currentPage = 1;
 	// 页码选择器构造函数
 	function Page(index){
@@ -725,7 +737,7 @@ namespace("Pages",["Class","FloatWin"],function(Class,FloatWin){
 			var psize = 20;
 		}
 		// 发出新的请求
-		ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",Class.showList,{
+		ajaxClass(Class.showList, {
 			pageNo: currentPage,
 			psize: psize, 
 			type: GLOBAL.classType
@@ -753,7 +765,7 @@ namespace("Pages",["Class","FloatWin"],function(Class,FloatWin){
 			fr = index -6;
 			to = index + 1;
 		}
-		helper(fr,to,index);
+		helper(fr, to, index);
 		function helper(fr, to, index){
 			for(i=fr;i<=to;i++){
 				var page = new Page({num: i});
@@ -787,7 +799,7 @@ namespace("Pages",["Class","FloatWin"],function(Class,FloatWin){
 });
 
 // tab选择器事件加载
-namespace("Tab",["Class","Pages"],function(Class,Pages){
+namespace("Tab", ["Class","Pages"], function(Class,Pages){
 	GLOBAL.classType = 10;
 	// 两个tab按钮事件加载
 	var leftTab = $("lftab");
@@ -818,7 +830,7 @@ namespace("Tab",["Class","Pages"],function(Class,Pages){
 			Class.clearList();
 			Pages.clearPage();
 			Pages.setPage(1);
-			ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",Class.showList,argument);
+			ajaxClass(Class.showList, argument);
 		}
 	}
 });
