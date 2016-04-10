@@ -64,7 +64,7 @@
 .g-tpbd .m-envt .f-evnt{margin-right: 4px;}
 
 /* m-mbd布局 */
-.g-mbd{text-align: left; background-color: #F6F6F6;}
+.g-mbd{text-align: left; background-color: #F8F8F8;}
 .g-mbd .j-middle{width: 1206px; margin: 0 auto;}
 /* 左侧课程列表 */
 .g-mbd .left-fix{float: left; width: 100%; margin-right: -226px;}
@@ -175,7 +175,7 @@
 .m-floatWin .floatImg{float: left; margin-top: 11px; margin-left: 11px; width: 225px; height: 124px;}
 .m-floatWin .rightSide{float: left; margin-left: 19px; width: 225px; height: 124px;}
 .m-floatWin .botDes{width: 426px; margin-top: 155px; padding: 17px 33px 19px 21px; font-size: 14px; line-height: 24px; color: #666666; background-color: #F6F6F6;}
-.m-floatWin .rightSide .ft-title{margin-top: 14px; font-size: 18px; line-height: 20px; color: #333333;}
+.m-floatWin .rightSide .ft-title{margin-top: 14px; padding-right: 19px; font-size: 18px; line-height: 20px; color: #333333;}
 .m-floatWin .rightSide .ft-num{margin-top: 13px; text-indent: 15px; margin-bottom: 11px; background: url(../image/sprite2.png) -228px -19px no-repeat;}
 
 /* 表单错误信息提示 */

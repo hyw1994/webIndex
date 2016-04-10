@@ -138,12 +138,14 @@ function ajax(method,url,call,argument){
 	var data;
 	var xhr = (function(){
 		var xmlhttp;
-		try{
-			// 对IE9及IE8以下浏览器进行兼容
+		
+		// 对IE9及IE8以下浏览器进行兼容
+
+		if(isIE || IE9){
 			xmlhttp = new ActiveXObject('MSXML2.XMLHttp');
-		}catch(ex){
+		}else{
 			xmlhttp = new XMLHttpRequest();
-		};
+		}
 		return xmlhttp;
 	})();
 	if(argument){
@@ -238,13 +240,7 @@ var constant = (function(){
 					}
 				}
 				})();
-// 获取课程列表函数
-// function getClass(currentPage){
-// 	GLOBAL.clearPage();
-// 	GLOBAL.setPage(currentPage);
-// 	ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",GLOBAL.showList,argument);
-// }
-// 
+
 // 命名空间，用来实现模块化应用。
 var namespace = (function(){//namespace函数用来缓存所有的模块，并且返回当前组件。
     var cache = {};//缓存所有模块
@@ -293,6 +289,7 @@ if(!Array.prototype.map){
 function ajaxClass(callback,argument){
 	ajax("get","http://study.163.com/webDev/couresByCategory.htm\\",callback,argument);
 }
+
 /*
  HTML5 Shiv v3.7.0 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
 */

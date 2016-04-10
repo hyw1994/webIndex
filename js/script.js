@@ -80,7 +80,7 @@ var GLOBAL = {};
 				(isIE)? element.style.filter="alpha(opacity:" + opacity + ")" : element.style.opacity = 1;
 				clearInterval(intervalID);//如果到了100，注销渐入效果
 			}
-		}
+		};
 		var intervalID = setInterval(step, 10);//10*50=500ms，即渐入效果持续500ms，
 	}
 	// point元素初始化
@@ -251,7 +251,7 @@ var GLOBAL = {};
 			cookie.setCookie("followSuc", true);
 			hide($("ffocus"));
 			show($("ffcoused"));
-			$("fnum").innerHTML = "粉丝：46";
+			$("fnum").innerText = "粉丝：46";
 			addEvent(cancel, "click", logOf, false);
 		}
 	}
@@ -261,7 +261,7 @@ var GLOBAL = {};
 		cookie.setCookie("followSuc",false);
 		show($("ffocus"));
 		hide($("ffcoused"));
-		$("fnum").innerHTML = "粉丝：45";
+		$("fnum").innerText = "粉丝：45";
 	}
 })();
 // 产品展示组件
@@ -297,8 +297,8 @@ var GLOBAL = {};
 	var node3 = html2node(product3.template);
 	// 更改其背景信息，并将最右侧元素的宽设为auto，防止超出界限
 	node3.style.width = "auto";
-	node2.children[0].children[0].style.background = "url(image/sprite.png) -117px -111px no-repeat"
-	node3.children[0].children[0].style.background = "url(image/sprite.png) -230px -111px no-repeat"
+	node2.children[0].children[0].style.background = "url(image/sprite.png) -117px -111px no-repeat";
+	node3.children[0].children[0].style.background = "url(image/sprite.png) -230px -111px no-repeat";
 	// 将元素添加到父节点上
 	prdt.appendChild(node1);
 	prdt.appendChild(node2);
@@ -389,7 +389,7 @@ var GLOBAL = {};
 			enter: 'zoomIn',
 			leave: 'zoomOut'
 		}
-	})
+	});
 })();
 // 右侧推荐课程加载以及动画效果的实现
 (function(){
@@ -426,9 +426,9 @@ var GLOBAL = {};
 		// 初始化函数
 		_initEvent: function(){
 			this.image.src = this.data.url;
-			this.title.innerHTML = this.data.name;
+			this.title.innerText = this.data.name;
 			this.title.title = this.data.name;
-			this.number.innerHTML = this.data.number;
+			this.number.innerText = this.data.number;
 		},
 		append: function(){
 			ol.appendChild(this.container);
@@ -477,7 +477,7 @@ var GLOBAL = {};
 	 			(index==19)? index=0 : index++;
 	 			clearInterval(intervalID);
 	 		}
-	 	}
+	 	};
 	 	var intervalID = setInterval(step, 10);
 	 }
 	 ajax("get", "http://study.163.com/webDev/hotcouresByCategory.htm\\", showList);
@@ -534,11 +534,11 @@ namespace("FloatWin",[],function(){
 		// data[7]里存的是当前课程的信息列表
 		data[0].style.display = "";
 		data[1].src = data[7].url;
-		data[2].innerHTML = data[7].name;
-		data[3].innerHTML = data[7].description;
-		data[4].innerHTML = data[7].number + "人在学";
-		data[5].innerHTML = data[7].provider;
-		data[6].innerHTML = "分类：" + data[7].clclass;
+		data[2].innerText = data[7].name;
+		data[3].innerText = data[7].description;
+		data[4].innerText = data[7].number + "人在学";
+		data[5].innerText = data[7].provider;
+		data[6].innerText = "分类：" + data[7].clclass;
 	}
 	// 获取目前选中的课程数据
 	function getData(index){
@@ -590,6 +590,7 @@ namespace("Class",["FloatWin"],function(FloatWin){
 
 		this._initEvent();
 	}
+
 	extend(ClassList.prototype,{
 		_layout: html2node(template),
 		olNode: $("clist"),
@@ -597,11 +598,11 @@ namespace("Class",["FloatWin"],function(FloatWin){
 		_initEvent: function(){
 			// 赋值图片地址，标题，人数，价格，提供商等信息
 			this.image.src = this.data.url;
-			this.title.innerHTML = this.data.name;
+			this.title.innerText = this.data.name;
 			this.title.title = this.data.name;
-			this.num.innerHTML = this.data.number + "&nbsp";
-			this.price.innerHTML = "¥" + " " + this.data.price;
-			this.provider.innerHTML = this.data.provider;
+			this.num.innerText = this.data.number + "&nbsp";
+			this.price.innerText = "¥" + " " + this.data.price;
+			this.provider.innerText = this.data.provider;
 			// 将index信息保存在name属性中
 			this.container.name = this.data.index;
 			
@@ -611,12 +612,13 @@ namespace("Class",["FloatWin"],function(FloatWin){
 			 * 如果是IE8，则取得event.srcElement，即其他版本浏览器中的this
 			 */
 			addEvent(this.container,"mouseenter",function(event){
+				// 临时元素位置
 				var tem;
 				// 移入课程窗口时，显示课程详情弹窗
 				if(isIE){
 					event = window.event;
 					tem = getPosition(event.srcElement);
-					FloatWin.showWin(tem,event.srcElement.name);
+					FloatWin.showWin(tem, event.srcElement.name);
 				}else{
 					tem = getPosition(this);
 					FloatWin.showWin(tem, this.name);
@@ -643,6 +645,7 @@ namespace("Class",["FloatWin"],function(FloatWin){
 	var list = [];
 	// 课程列表的回调函数
 	function showList(classes){
+		list = [];
 		for(i=0;i<classes.list.length;i++){
 			var item = new ClassList({
 				data:{
@@ -698,13 +701,13 @@ namespace("Pages", ["Class", "FloatWin"], function(Class,FloatWin){
 		this.pageSelector.removeChild(this.container);
 	}
 	Page.prototype._initEvent = function(){
-		this.container.innerHTML = this.num;
+		this.container.innerText = this.num;
 		addEvent(this.container,"click",function(event){
 			if(isIE){
 				event = window.event;
-				currentPage = event.srcElement.innerHTML;
+				currentPage = event.srcElement.innerText;
 			}else{
-				currentPage = this.innerHTML;
+				currentPage = this.innerText;
 			}
 			changePage();
 		});
@@ -817,6 +820,12 @@ namespace("Tab", ["Class","Pages"], function(Class,Pages){
 	// 判断点击的是哪一个，更改样式
 	function changeType(argument){
 		return function helper(){
+			// 重新加载课程列表和选择器
+			try{
+				Class.clearList();
+			}catch(ex){
+				return;
+			}
 			if(argument.type == 10){
 				GLOBAL.classType = 10;
 				delClass(rightTab, "j-selected");
@@ -826,11 +835,19 @@ namespace("Tab", ["Class","Pages"], function(Class,Pages){
 				delClass(leftTab, "j-selected");
 				addClass(rightTab,"j-selected");
 			}
-			// 重新加载课程列表和选择器
-			Class.clearList();
 			Pages.clearPage();
 			Pages.setPage(1);
 			ajaxClass(Class.showList, argument);
-		}
+		};
 	}
 });
+
+// innerText Firefox兼容
+if(!("innerText" in document.body)){
+	HTMLElement.prototype.__defineGetter__("innerText",function(){
+		return this.textcontent;
+	});
+	HTMLElement.prototype.__defineSetter__("innerText",function(s){
+		this.textcontent = s;
+	});
+}

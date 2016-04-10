@@ -13,7 +13,7 @@ var animateClass = (function(){
       
       // Chrome/Saf (+ Mobile Saf)/Android
       transitionEnd += ' webkitTransitionEnd';
-      transitionProperty = 'webkitTransition'
+      transitionProperty = 'webkitTransition';
     } else if('onotransitionend' in testNode || navigator.appName === 'Opera') {
 
       // Opera
